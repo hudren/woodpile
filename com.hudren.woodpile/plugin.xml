@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Log Viewing"
+            id="com.hudren.woodpile">
+      </category>
+      <view
+            allowMultiple="false"
+            category="com.hudren.woodpile"
+            class="com.hudren.woodpile.views.SessionView"
+            icon="icons/log_session.gif"
+            id="com.hudren.woodpile.views.SessionView"
+            name="Log Session">
+      </view>
+      <view
+            allowMultiple="false"
+            category="com.hudren.woodpile"
+            class="com.hudren.woodpile.views.LogEventView"
+            icon="icons/log_event.gif"
+            id="com.hudren.woodpile.views.LogEventView"
+            name="Log Event"/>
+      <view
+            allowMultiple="false"
+            category="com.hudren.woodpile"
+            class="com.hudren.woodpile.views.LogExplorerView"
+            icon="icons/log_explorer.gif"
+            id="com.hudren.woodpile.views.LogExplorerView"
+            name="Log Explorer"/>
+      <view
+            allowMultiple="false"
+            category="com.hudren.woodpile"
+            class="com.hudren.woodpile.views.CategoryView"
+            icon="icons/log_category.gif"
+            id="com.hudren.woodpile.views.CategoryView"
+            name="Loggers"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="com.hudren.woodpile.LogViewingPerspectiveFactory"
+            icon="icons/log_perspective.gif"
+            id="com.hudren.woodpile.LogViewingPerspective"
+            name="Log Viewing"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.hudren.woodpile.prefs.GlobalPreferencePage"
+            id="com.hudren.woodpile.prefs.global"
+            name="Log Viewing"/>
+      <page
+            category="com.hudren.woodpile.prefs.global"
+            class="com.hudren.woodpile.prefs.ColorPreferencePage"
+            id="com.hudren.woodpile.prefs.colors"
+            name="Colors"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <viewShortcut id="com.hudren.woodpile.views.LogView"/>
+         <perspectiveShortcut id="com.hudren.woodpile.LogViewingPerspective"/>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
+         <viewShortcut id="com.hudren.woodpile.views.LogView"/>
+         <perspectiveShortcut id="com.hudren.woodpile.LogViewingPerspective"/>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="com.hudren.woodpile.LogViewingPerspective">
+         <perspectiveShortcut id="org.eclipse.jdt.ui.JavaPerspective"/>
+         <perspectiveShortcut id="org.eclipse.debug.ui.DebugPerspective"/>
+         <viewShortcut id="org.eclipse.ui.console.ConsoleView"/>
+         <viewShortcut id="org.eclipse.ui.views.ResourceNavigator"/>
+         <viewShortcut id="org.eclipse.ui.views.ContentOutline"/>
+         <viewShortcut id="org.eclipse.jdt.ui.PackageExplorer"/>
+         <viewShortcut id="org.eclipse.ui.views.ProblemView"/>
+         <viewShortcut id="org.eclipse.ui.views.ProgressView"/>
+         <viewShortcut id="org.eclipse.ui.views.TaskList"/>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>
