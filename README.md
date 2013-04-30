@@ -1,4 +1,4 @@
-woodpile
+Woodpile
 ========
 
-Woodpile is an Eclipse Plugin for capture log events from multiple Log4J sources.
+Woodpile is an Eclipse Plugin for capturing and viewing Log4j events from multiple sources (processes).
