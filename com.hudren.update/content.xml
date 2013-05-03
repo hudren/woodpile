@@ -3,13 +3,13 @@
 <repository name='Update Site' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1367597442024'/>
+    <property name='p2.timestamp' value='1367610403718'/>
   </properties>
   <references size='2'>
     <repository uri='http://www.hudren.com/update/' url='http://www.hudren.com/update/' type='1' options='0'/>
     <repository uri='http://www.hudren.com/update/' url='http://www.hudren.com/update/' type='0' options='0'/>
   </references>
-  <units size='15'>
+  <units size='20'>
     <unit id='com.hudren.woodpile.feature.jar' version='0.6.2'>
       <update id='com.hudren.woodpile.feature.jar' range='[0.0.0,0.6.2)' severity='0'/>
       <properties size='4'>
@@ -222,6 +222,20 @@
         </instructions>
       </touchpointData>
     </unit>
+    <unit id='Developer' version='1.0.0.07A5cKfnvE'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Eclipse 3.2 Plugins'/>
+        <property name='org.eclipse.equinox.p2.description' value='This category contains Eclipse plugins useful for software developers.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='Developer' version='1.0.0.07A5cKfnvE'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.feature.group' range='[0.6.3,0.6.3]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
     <unit id='com.hudren.woodpile' version='0.6.3'>
       <update id='com.hudren.woodpile' range='[0.0.0,0.6.3)' severity='0'/>
       <properties size='3'>
@@ -250,20 +264,6 @@
           </instruction>
         </instructions>
       </touchpointData>
-    </unit>
-    <unit id='Developer' version='1.0.0.07A5cKfnvE'>
-      <properties size='3'>
-        <property name='org.eclipse.equinox.p2.name' value='Eclipse 3.2 Plugins'/>
-        <property name='org.eclipse.equinox.p2.description' value='This category contains Eclipse plugins useful for software developers.'/>
-        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
-      </properties>
-      <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='Developer' version='1.0.0.07A5cKfnvE'/>
-      </provides>
-      <requires size='1'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.feature.group' range='[0.6.3,0.6.3]'/>
-      </requires>
-      <touchpoint id='null' version='0.0.0'/>
     </unit>
     <unit id='a.jre' version='1.6.0' singleton='false'>
       <provides size='117'>
@@ -496,6 +496,88 @@
         Copyright (c) 2006-9 Hudren Andromeda Connection. All rights reserved.
       </copyright>
     </unit>
+    <unit id='com.hudren.woodpile.feature.group' version='0.6.4' singleton='false'>
+      <update id='com.hudren.woodpile.feature.group' range='[0.0.0,0.6.4)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Woodpile'/>
+        <property name='org.eclipse.equinox.p2.description' value='Woodpile is an Eclipse plugin for capturing and viewing Apache Log4j events. &#xA;Inspired by Chainsaw. &#xA;Intended for developers. &#xA;Requires Eclipse 3.2 and JDK 1.6 runtime. &#xA;Compatible with Log4j 1.2.17. &#xA;Uses Beanshell 2.0b4.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Hudren Andromeda Connection'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.feature.group' version='0.6.4'/>
+      </provides>
+      <requires size='5'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui' range='3.2.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.runtime' range='3.2.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile' range='[0.6.4,0.6.4]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.startup' range='[0.6.4,0.6.4]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.feature.jar' range='[0.6.4,0.6.4]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+      <licenses size='1'>
+        <license>
+          This product is free to use. No warranties are made.
+        </license>
+      </licenses>
+      <copyright>
+        Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved.
+      </copyright>
+    </unit>
+    <unit id='Developer' version='1.0.0.07M7CcKfnvE'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Eclipse 3.2 Plugins'/>
+        <property name='org.eclipse.equinox.p2.description' value='This category contains Eclipse plugins useful for software developers.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='Developer' version='1.0.0.07M7CcKfnvE'/>
+      </provides>
+      <requires size='2'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.feature.group' range='[0.6.3,0.6.3]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.feature.group' range='[0.6.4,0.6.4]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='com.hudren.woodpile.feature.jar' version='0.6.4'>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Woodpile'/>
+        <property name='org.eclipse.equinox.p2.description' value='Woodpile is an Eclipse plugin for capturing and viewing Apache Log4j events. &#xA;Inspired by Chainsaw. &#xA;Intended for developers. &#xA;Requires Eclipse 3.2 and JDK 1.6 runtime. &#xA;Compatible with Log4j 1.2.13. &#xA;Uses Beanshell 2.0b4.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Hudren Andromeda Connection'/>
+        <property name='org.eclipse.update.feature.plugin' value='com.hudren.woodpile'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.feature.jar' version='0.6.4'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+        <provided namespace='org.eclipse.update.feature' name='com.hudren.woodpile' version='0.6.4'/>
+      </provides>
+      <filter>
+        (org.eclipse.update.install.features=true)
+      </filter>
+      <artifacts size='1'>
+        <artifact classifier='org.eclipse.update.feature' id='com.hudren.woodpile' version='0.6.4'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='zipped'>
+            true
+          </instruction>
+        </instructions>
+      </touchpointData>
+      <licenses size='1'>
+        <license>
+          This product is free to use. No warranties are made.
+        </license>
+      </licenses>
+      <copyright>
+        Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved.
+      </copyright>
+    </unit>
     <unit id='config.a.jre' version='1.6.0' singleton='false'>
       <hostRequirements size='1'>
         <required namespace='org.eclipse.equinox.p2.iu' name='a.jre' range='1.6.0'/>
@@ -514,6 +596,64 @@
         <instructions size='1'>
           <instruction key='install'>
 
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='com.hudren.woodpile.startup' version='0.6.4'>
+      <update id='com.hudren.woodpile.startup' range='[0.0.0,0.6.4)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Woodpile Startup Plug-in'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Hudren Andromeda Connection'/>
+        <property name='org.eclipse.equinox.p2.bundle.localization' value='plugin'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile.startup' version='0.6.4'/>
+        <provided namespace='osgi.bundle' name='com.hudren.woodpile.startup' version='0.6.4'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='3'>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='com.hudren.woodpile' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='com.hudren.woodpile.startup' version='0.6.4'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: com.hudren.woodpile.startup;singleton:=true&#xA;Bundle-Version: 0.6.4
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='com.hudren.woodpile' version='0.6.4'>
+      <update id='com.hudren.woodpile' range='[0.0.0,0.6.4)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Woodpile Plug-in'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Hudren Andromeda Connection'/>
+        <property name='org.eclipse.equinox.p2.bundle.localization' value='plugin'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.hudren.woodpile' version='0.6.4'/>
+        <provided namespace='osgi.bundle' name='com.hudren.woodpile' version='0.6.4'/>
+        <provided namespace='java.package' name='com.hudren.woodpile' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='2'>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='3.2.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='3.2.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='com.hudren.woodpile' version='0.6.4'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: com.hudren.woodpile; singleton:=true&#xA;Bundle-Version: 0.6.4
           </instruction>
         </instructions>
       </touchpointData>

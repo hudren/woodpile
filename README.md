@@ -2,9 +2,11 @@
 
 Woodpile is an Eclipse plugin for capturing and viewing Apache log4j events from multiple sources.
 
+NB: Woodpile is a developer tool and not meant for monitoring production servers.
+
 ## Requirements
 
-Woodpile requires a minumum of Eclipse 3.2 running on Java 6.
+Woodpile requires a minimum of Eclipse 3.2 running on Java 6.
 
 ## Log4j Configuration
 
