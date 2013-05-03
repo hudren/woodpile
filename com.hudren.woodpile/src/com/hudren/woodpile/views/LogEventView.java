@@ -204,7 +204,8 @@ public class LogEventView
 	{
 		WoodpilePlugin.getDefault().getCurrentSession().removeListener( this );
 
-		font.dispose();
+		if ( font != null )
+			font.dispose();
 
 		super.dispose();
 	}

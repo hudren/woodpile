@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://www.hudren.com/update">
+      Hudren Andromeda Connection
+   </description>
+   <feature url="features/com.hudren.woodpile_0.6.3.jar" id="com.hudren.woodpile" version="0.6.3">
+      <category name="Developer"/>
+   </feature>
+   <category-def name="Developer" label="Eclipse 3.2 Plugins">
+      <description>
+         This category contains Eclipse plugins useful for software developers.
+      </description>
+   </category-def>
+</site>
