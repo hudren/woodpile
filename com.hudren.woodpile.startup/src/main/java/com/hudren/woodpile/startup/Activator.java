@@ -1,3 +1,22 @@
+/*
+ * Project: com.hudren.woodpile.startup
+ * File:    Activator.java
+ *
+ * Author:  Jeff Hudren
+ * Created: Jul 3, 2006
+ *
+ * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved. 
+ * 
+ * The use and distribution terms for this software are covered by the
+ * Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ * which can be found in the file epl-v10.html at the root of this distribution.
+ * 
+ * By using this software in any fashion, you are agreeing to be bound by
+ * the terms of this license.
+ * 
+ * You must not remove this notice, or any other, from this software.
+ */
+
 package com.hudren.woodpile.startup;
 
 import org.eclipse.core.runtime.Plugin;
@@ -7,7 +26,7 @@ import org.osgi.framework.BundleContext;
 import com.hudren.woodpile.WoodpileStartup;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  */
 public class Activator
 	extends Plugin
@@ -37,22 +56,12 @@ public class Activator
 		new WoodpileStartup();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start( BundleContext context ) throws Exception
 	{
 		super.start( context );
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop( BundleContext context ) throws Exception
 	{

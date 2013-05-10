@@ -5,7 +5,16 @@
  * Author:  Jeff Hudren
  * Created: Jul 21, 2006
  *
- * Copyright (c) 2006 Hudren Andromeda Connection. All rights reserved. 
+ * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved. 
+ * 
+ * The use and distribution terms for this software are covered by the
+ * Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ * which can be found in the file epl-v10.html at the root of this distribution.
+ * 
+ * By using this software in any fashion, you are agreeing to be bound by
+ * the terms of this license.
+ * 
+ * You must not remove this notice, or any other, from this software.
  */
 
 package com.hudren.woodpile;
@@ -36,136 +45,138 @@ import com.hudren.woodpile.net.Receiver;
  * @author Jeff Hudren
  */
 public class Recorder
-    implements SourceListener
+	implements SourceListener
 {
 
-    /**
-     * The port used to capture and playback.
-     */
-    private static final int PORT = 4560;
+	/**
+	 * The port used to capture and playback.
+	 */
+	private static final int PORT = 4560;
 
-    /**
-     * The remote host.
-     */
-    private static final String REMOTE_HOST = "localhost";
+	/**
+	 * The remote host.
+	 */
+	private static final String REMOTE_HOST = "localhost";
 
-    private final File file = new File( "test/com/hudren/woodpile/events.serial" );
+	private final File file = new File( "test/com/hudren/woodpile/events.serial" );
 
-    private List<LogEvent> events = new ArrayList<LogEvent>();
+	private List<LogEvent> events = new ArrayList<LogEvent>();
 
-    /**
-     * TODO main description
-     * 
-     * @param args
-     */
-    public static void main( final String[] args )
-    {
-        final Recorder recorder = new Recorder();
+	/**
+	 * TODO main description
+	 * 
+	 * @param args
+	 */
+	public static void main( final String[] args )
+	{
+		final Recorder recorder = new Recorder();
 
-        try
-        {
-            if ( args.length == 1 )
-            {
-                if ( "capture".equals( args[0] ) )
-                {
-                    recorder.capture();
-                }
-                else if ( "playback".equals( args[0] ) )
-                {
-                    recorder.playback();
-                }
-                else
-                {
-                    System.err.println( "Unknown arguments!" );
-                }
-            }
-            else
-            {
-                System.err.println( "Missing arguments!" );
-            }
-        }
-        catch ( final Exception e )
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            LogManager.shutdown();
-        }
+		try
+		{
+			if ( args.length == 1 )
+			{
+				if ( "capture".equals( args[ 0 ] ) )
+				{
+					recorder.capture();
+				}
+				else if ( "playback".equals( args[ 0 ] ) )
+				{
+					recorder.playback();
+				}
+				else
+				{
+					System.err.println( "Unknown arguments!" );
+				}
+			}
+			else
+			{
+				System.err.println( "Missing arguments!" );
+			}
+		}
+		catch ( final Exception e )
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			LogManager.shutdown();
+		}
 
-    }
+	}
 
-    private void capture()
-        throws IOException
-    {
-        System.out.println( "Starting capture..." );
+	private void capture() throws IOException
+	{
+		System.out.println( "Starting capture..." );
 
-        final Receiver receiver = new Receiver( PORT, this );
-        receiver.start();
+		final Receiver receiver = new Receiver( PORT, this );
+		receiver.start();
 
-        // Wait until receiver closes
-        synchronized ( this )
-        {
-            try
-            {
-                wait();
-            }
-            catch ( final InterruptedException e )
-            {
-                e.printStackTrace();
-            }
-        }
+		// Wait until receiver closes
+		synchronized ( this )
+		{
+			try
+			{
+				wait();
+			}
+			catch ( final InterruptedException e )
+			{
+				e.printStackTrace();
+			}
+		}
 
-        // Write events to file
-        final ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( file ) );
-        oos.writeObject( events );
-        oos.close();
+		// Write events to file
+		final ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( file ) );
+		oos.writeObject( events );
+		oos.close();
 
-        System.out.println( "Captured " + events.size() + " events." );
-    }
+		System.out.println( "Captured " + events.size() + " events." );
+	}
 
-    @SuppressWarnings( "unchecked" )
-    private void playback()
-        throws FileNotFoundException, IOException, ClassNotFoundException
-    {
-        System.out.println( "Starting playback..." );
+	@SuppressWarnings( "unchecked" )
+	private void playback() throws FileNotFoundException, IOException, ClassNotFoundException
+	{
+		System.out.println( "Starting playback..." );
 
-        // Write events to file
-        final ObjectInputStream ois = new ObjectInputStream( new FileInputStream( file ) );
-        events = (ArrayList<LogEvent>) ois.readObject();
-        ois.close();
+		// Write events to file
+		final ObjectInputStream ois = new ObjectInputStream( new FileInputStream( file ) );
+		events = (ArrayList<LogEvent>) ois.readObject();
+		ois.close();
 
-        final Logger logger = Logger.getLogger( Recorder.class );
-        final Appender appender = new SocketAppender( REMOTE_HOST, PORT );
-        logger.addAppender( appender );
+		final Logger logger = Logger.getLogger( Recorder.class );
+		final Appender appender = new SocketAppender( REMOTE_HOST, PORT );
+		logger.addAppender( appender );
 
-        for ( final LogEvent event : events )
-        {
-            final LoggingEvent logEvent = new LoggingEvent( event.getLoggerName(), Logger.getLogger( event.getLoggerName() ), event.getTimeStamp(), event.getLevel(), event.getRenderedMessage(), null );
+		for ( final LogEvent event : events )
+		{
+			final LoggingEvent logEvent =
+					new LoggingEvent( event.getLoggerName(), Logger.getLogger( event.getLoggerName() ), event.getTimeStamp(),
+							event.getLevel(), event.getRenderedMessage(), null );
 
-            logger.callAppenders( logEvent );
-        }
+			logger.callAppenders( logEvent );
+		}
 
-        System.out.println( "Played back " + events.size() + " events." );
-    }
+		System.out.println( "Played back " + events.size() + " events." );
+	}
 
-    /**
-     * @see com.hudren.woodpile.model.SourceListener#addEvents(java.util.List)
-     */
-    public void addEvents( final List<LogEvent> events )
-    {
-        this.events.addAll( events );
-    }
+	/**
+	 * @see com.hudren.woodpile.model.SourceListener#addEvents(java.util.List)
+	 */
+	@Override
+	public void addEvents( final List<LogEvent> events )
+	{
+		this.events.addAll( events );
+	}
 
-    /**
-     * @see com.hudren.woodpile.model.SourceListener#receiverClosed()
-     */
-    public void receiverClosed()
-    {
-        synchronized ( this )
-        {
-            notifyAll();
-        }
-    }
+	/**
+	 * @see com.hudren.woodpile.model.SourceListener#receiverClosed()
+	 */
+	@Override
+	public void receiverClosed()
+	{
+		synchronized ( this )
+		{
+			notifyAll();
+		}
+	}
 
 }

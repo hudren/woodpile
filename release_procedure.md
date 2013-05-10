@@ -4,7 +4,7 @@ Releasing a new version of Woodpile requires the following manual steps performe
 
 ## Build Woodpile
 
-In the order listed, update the version and use the Export Wizard to build the plugin or feature into the project for the update site (*com.hudren.update*).
+In the order listed, update the version and use the Export Wizard to build the plugin or feature into the project for the update site (com.hudren.update).
 
 ### com.hudren.woodpile
 

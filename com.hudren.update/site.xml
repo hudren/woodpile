@@ -3,15 +3,12 @@
    <description url="http://www.hudren.com/update">
       Hudren Andromeda Connection
    </description>
-   <feature url="features/com.hudren.woodpile_0.6.3.jar" id="com.hudren.woodpile" version="0.6.3">
-      <category name="Developer"/>
+   <feature url="features/com.hudren.woodpile_0.6.5.jar" id="com.hudren.woodpile" version="0.6.5">
+      <category name="Woodpile"/>
    </feature>
-   <feature url="features/com.hudren.woodpile_0.6.4.jar" id="com.hudren.woodpile" version="0.6.4">
-      <category name="Developer"/>
-   </feature>
-   <category-def name="Developer" label="Eclipse 3.2 Plugins">
+   <category-def name="Woodpile" label="Woodpile">
       <description>
-         This category contains Eclipse plugins useful for software developers.
+         This category contains the Woodpile plugin.
       </description>
    </category-def>
 </site>

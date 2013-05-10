@@ -8,6 +8,10 @@ NB: Woodpile is a developer tool and not meant for monitoring production servers
 
 Woodpile requires a minimum of Eclipse 3.2 running on Java 6.
 
+## Update Site
+
+The update site for Woodpile is `http://www.hudren.com/update`.
+
 ## Log4j Configuration
 
 Each log source must be configured to log events using the standard Log4j SocketAppender, for example:

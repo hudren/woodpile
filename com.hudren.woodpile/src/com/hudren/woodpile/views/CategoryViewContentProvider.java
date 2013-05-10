@@ -5,7 +5,16 @@
  * Author:  Jeff Hudren
  * Created: May 14, 2006
  *
- * Copyright (c) 2006 Hudren Andromeda Connection. All rights reserved. 
+ * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved. 
+ * 
+ * The use and distribution terms for this software are covered by the
+ * Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ * which can be found in the file epl-v10.html at the root of this distribution.
+ * 
+ * By using this software in any fashion, you are agreeing to be bound by
+ * the terms of this license.
+ * 
+ * You must not remove this notice, or any other, from this software.
  */
 
 package com.hudren.woodpile.views;
@@ -45,6 +54,7 @@ public class CategoryViewContentProvider
 	/**
 	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 	 */
+	@Override
 	public Object[] getElements( final Object inputElement )
 	{
 		if ( inputElement instanceof CategoryTree )
@@ -61,6 +71,7 @@ public class CategoryViewContentProvider
 	/**
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
+	@Override
 	public Object[] getChildren( final Object parentElement )
 	{
 		if ( parentElement instanceof Category )
@@ -77,6 +88,7 @@ public class CategoryViewContentProvider
 	/**
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
 	 */
+	@Override
 	public Object getParent( final Object element )
 	{
 		if ( element instanceof Category )
@@ -87,6 +99,7 @@ public class CategoryViewContentProvider
 	/**
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
 	 */
+	@Override
 	public boolean hasChildren( final Object element )
 	{
 		if ( element instanceof Category )
@@ -98,6 +111,7 @@ public class CategoryViewContentProvider
 	/**
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
+	@Override
 	public void dispose()
 	{
 	}
@@ -106,6 +120,7 @@ public class CategoryViewContentProvider
 	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
 	 *      java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public void inputChanged( final Viewer viewer, final Object oldInput, final Object newInput )
 	{
 		this.viewer = (TreeViewer) viewer;
@@ -126,6 +141,7 @@ public class CategoryViewContentProvider
 		}
 	}
 
+	@Override
 	public void nodeAdded( final Category parent, final Category child )
 	{
 		if ( Display.getCurrent() != null )
@@ -134,6 +150,7 @@ public class CategoryViewContentProvider
 			Display.getDefault().asyncExec( new Runnable()
 			{
 
+				@Override
 				public void run()
 				{
 					updateViewerAdd( parent, child );
@@ -145,6 +162,7 @@ public class CategoryViewContentProvider
 	/**
 	 * @see com.hudren.woodpile.model.CategoryTreeListener#nodeRemoved(com.hudren.woodpile.model.Category)
 	 */
+	@Override
 	public void nodeRemoved( final Category node )
 	{
 		if ( Display.getCurrent() != null )
@@ -153,6 +171,7 @@ public class CategoryViewContentProvider
 			Display.getDefault().asyncExec( new Runnable()
 			{
 
+				@Override
 				public void run()
 				{
 					updateViewerRemove( node );
@@ -164,6 +183,7 @@ public class CategoryViewContentProvider
 	/**
 	 * @see com.hudren.woodpile.model.CategoryTreeListener#categoryFilterChanged(boolean)
 	 */
+	@Override
 	public void categoryFilterChanged( final boolean update )
 	{
 	}
@@ -171,6 +191,7 @@ public class CategoryViewContentProvider
 	/**
 	 * @see com.hudren.woodpile.model.CategoryTreeListener#zoomFilterChanged(java.lang.String)
 	 */
+	@Override
 	public void zoomFilterChanged( final String name )
 	{
 	}

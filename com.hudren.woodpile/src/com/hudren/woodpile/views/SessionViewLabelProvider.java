@@ -5,7 +5,16 @@
  * Author:  Jeff Hudren
  * Created: May 7, 2006
  *
- * Copyright (c) 2006 Hudren Andromeda Connection. All rights reserved. 
+ * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved. 
+ * 
+ * The use and distribution terms for this software are covered by the
+ * Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ * which can be found in the file epl-v10.html at the root of this distribution.
+ * 
+ * By using this software in any fashion, you are agreeing to be bound by
+ * the terms of this license.
+ * 
+ * You must not remove this notice, or any other, from this software.
  */
 
 package com.hudren.woodpile.views;
@@ -141,6 +150,7 @@ public class SessionViewLabelProvider
 	 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object,
 	 *      int)
 	 */
+	@Override
 	public Image getColumnImage( final Object element, final int columnIndex )
 	{
 		Image image = null;
@@ -163,6 +173,7 @@ public class SessionViewLabelProvider
 	 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
 	 *      int)
 	 */
+	@Override
 	public String getColumnText( final Object element, final int columnIndex )
 	{
 		String label = null;
@@ -242,6 +253,7 @@ public class SessionViewLabelProvider
 	 * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object,
 	 *      int)
 	 */
+	@Override
 	public Color getBackground( final Object element, final int columnIndex )
 	{
 		Color color = null;
@@ -260,6 +272,7 @@ public class SessionViewLabelProvider
 	 * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object,
 	 *      int)
 	 */
+	@Override
 	public Color getForeground( final Object element, final int columnIndex )
 	{
 		Color color = null;

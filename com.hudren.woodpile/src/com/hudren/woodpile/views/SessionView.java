@@ -1,3 +1,22 @@
+/*
+ * Project: com.hudren.woodpile
+ * File:    SessionView.java
+ *
+ * Author:  Jeff Hudren
+ * Created: May 6, 2006
+ *
+ * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved. 
+ * 
+ * The use and distribution terms for this software are covered by the
+ * Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ * which can be found in the file epl-v10.html at the root of this distribution.
+ * 
+ * By using this software in any fashion, you are agreeing to be bound by
+ * the terms of this license.
+ * 
+ * You must not remove this notice, or any other, from this software.
+ */
+
 package com.hudren.woodpile.views;
 
 import java.util.HashMap;
@@ -87,12 +106,10 @@ public class SessionView
 	private TableColumn hostColumn;
 	private TableColumn serverColumn;
 
-	private final ColumnLayoutData columnLayouts[] =
-			{ new ColumnPixelData( 16, false, true ), new ColumnPixelData( 150, true, true ),
-					new ColumnPixelData( 70, true, true ), new ColumnPixelData( 200, true, true ),
-					new ColumnPixelData( 300, true, true ), new ColumnPixelData( 150, true, true ),
-					new ColumnPixelData( 150, true, true ), new ColumnPixelData( 150, true, true ),
-					new ColumnPixelData( 150, true, true ) };
+	private final ColumnLayoutData columnLayouts[] = { new ColumnPixelData( 16, false, true ),
+			new ColumnPixelData( 150, true, true ), new ColumnPixelData( 70, true, true ), new ColumnPixelData( 200, true, true ),
+			new ColumnPixelData( 300, true, true ), new ColumnPixelData( 150, true, true ), new ColumnPixelData( 150, true, true ),
+			new ColumnPixelData( 150, true, true ), new ColumnPixelData( 150, true, true ) };
 
 	private static final String TAG_COLUMN = "column";
 	private static final String TAG_NUMBER = "number";
@@ -145,6 +162,7 @@ public class SessionView
 	private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
 	{
 
+		@Override
 		public void propertyChange( PropertyChangeEvent event )
 		{
 			if ( labelProvider != null )
@@ -241,6 +259,7 @@ public class SessionView
 		searchTextCombo.addModifyListener( new ModifyListener()
 		{
 
+			@Override
 			public void modifyText( final ModifyEvent e )
 			{
 				enableActions();
@@ -251,11 +270,13 @@ public class SessionView
 		searchTextCombo.addSelectionListener( new SelectionListener()
 		{
 
+			@Override
 			public void widgetDefaultSelected( final SelectionEvent e )
 			{
 				searchAction.run();
 			}
 
+			@Override
 			public void widgetSelected( final SelectionEvent e )
 			{
 			}
@@ -365,6 +386,7 @@ public class SessionView
 		menuMgr.addMenuListener( new IMenuListener()
 		{
 
+			@Override
 			public void menuAboutToShow( final IMenuManager manager )
 			{
 				SessionView.this.fillContextMenu( manager );
@@ -716,6 +738,7 @@ public class SessionView
 		viewer.addDoubleClickListener( new IDoubleClickListener()
 		{
 
+			@Override
 			public void doubleClick( final DoubleClickEvent event )
 			{
 				doubleClickAction.run();
@@ -814,6 +837,7 @@ public class SessionView
 		pageSelectionListener = new ISelectionListener()
 		{
 
+			@Override
 			public void selectionChanged( final IWorkbenchPart part, final ISelection selection )
 			{
 				pageSelectionChanged( part, selection );

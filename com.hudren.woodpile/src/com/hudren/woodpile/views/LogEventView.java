@@ -5,7 +5,16 @@
  * Author:  Jeff Hudren
  * Created: May 6, 2006
  *
- * Copyright (c) 2006 Hudren Andromeda Connection. All rights reserved. 
+ * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved. 
+ * 
+ * The use and distribution terms for this software are covered by the
+ * Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ * which can be found in the file epl-v10.html at the root of this distribution.
+ * 
+ * By using this software in any fashion, you are agreeing to be bound by
+ * the terms of this license.
+ * 
+ * You must not remove this notice, or any other, from this software.
  */
 
 package com.hudren.woodpile.views;
@@ -139,6 +148,7 @@ public class LogEventView
 		pageSelectionListener = new ISelectionListener()
 		{
 
+			@Override
 			public void selectionChanged( final IWorkbenchPart part, final ISelection selection )
 			{
 				pageSelectionChanged( part, selection );
@@ -154,7 +164,7 @@ public class LogEventView
 			if ( selection instanceof IStructuredSelection )
 				if ( !selection.isEmpty() )
 				{
-					final Iterator it = ( (IStructuredSelection) selection ).iterator();
+					final Iterator<?> it = ( (IStructuredSelection) selection ).iterator();
 					if ( it.hasNext() )
 					{
 						final Object obj = it.next();
@@ -182,7 +192,7 @@ public class LogEventView
 
 				if ( selection instanceof IStructuredSelection )
 				{
-					final Iterator it = ( (IStructuredSelection) selection ).iterator();
+					final Iterator<?> it = ( (IStructuredSelection) selection ).iterator();
 					if ( it.hasNext() )
 					{
 						final Object obj = it.next();
@@ -232,10 +242,12 @@ public class LogEventView
 		this.event = event;
 	}
 
+	@Override
 	public void eventsChanged( final Session session, final List<LogEvent> removed, final List<LogEvent> added )
 	{
 	}
 
+	@Override
 	public void sessionCleared( final Session session )
 	{
 		updateText( null );
@@ -244,6 +256,7 @@ public class LogEventView
 	/**
 	 * @see com.hudren.woodpile.model.SessionListener#sessionChanged(com.hudren.woodpile.model.Session)
 	 */
+	@Override
 	public void sessionChanged( final Session session )
 	{
 	}
