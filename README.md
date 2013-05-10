@@ -12,6 +12,12 @@ Woodpile requires a minimum of Eclipse 3.2 running on Java 6.
 
 The update site for Woodpile is `http://www.hudren.com/update`.
 
+## Usage
+
+Woodpile contains both a perspective and a preference panel called Log Viewing. There are several views within the Log Viewing category that can be added to any perspective.
+
+By default, Woodpile automatically listens over the network for log events at the port specified within the preferences. These events are only stored in memory, so clearing log sessions or exiting /restarting Eclipse will result in their permanent destruction.
+
 ## Log4j Configuration
 
 Each log source must be configured to log events using the standard Log4j SocketAppender, for example:
