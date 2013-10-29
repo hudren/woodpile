@@ -59,7 +59,7 @@ public class CategoryViewContentProvider
 	{
 		if ( inputElement instanceof CategoryTree )
 		{
-			final SortedSet children = ( (CategoryTree) inputElement ).getChildren();
+			final SortedSet<Category> children = ( (CategoryTree) inputElement ).getChildren();
 
 			if ( children != null )
 				return children.toArray();
@@ -76,7 +76,7 @@ public class CategoryViewContentProvider
 	{
 		if ( parentElement instanceof Category )
 		{
-			final SortedSet children = ( (Category) parentElement ).getChildren();
+			final SortedSet<Category> children = ( (Category) parentElement ).getChildren();
 
 			if ( children != null )
 				return children.toArray();

@@ -123,7 +123,9 @@ public class SessionViewContentProvider
 	{
 		if ( Display.getCurrent() != null )
 			updateViewer( removed, added );
+
 		else
+		{
 			synchronized ( addedQueue )
 			{
 				if ( removed != null )
@@ -155,9 +157,11 @@ public class SessionViewContentProvider
 								updatingView = false;
 							}
 						}
+
 					} );
 				}
 			}
+		}
 	}
 
 	private void updateViewer( final List<LogEvent> removed, final List<LogEvent> added )
@@ -186,6 +190,7 @@ public class SessionViewContentProvider
 	public void sessionCleared( final Session session )
 	{
 		if ( session == this.session )
+		{
 			new DisplayRunner()
 			{
 
@@ -195,6 +200,7 @@ public class SessionViewContentProvider
 					clearViewer();
 				}
 			}.start();
+		}
 	}
 
 	/**
@@ -213,6 +219,7 @@ public class SessionViewContentProvider
 	public void sessionAdded( final Session session, final Session deactivated )
 	{
 		if ( deactivated == this.session )
+		{
 			new DisplayRunner()
 			{
 
@@ -222,6 +229,7 @@ public class SessionViewContentProvider
 					viewer.setInput( session );
 				}
 			}.start();
+		}
 	}
 
 	/**

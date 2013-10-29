@@ -21,7 +21,6 @@ package com.hudren.woodpile.views;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -87,9 +86,9 @@ public class LogExplorerView
 
 	private void fillLocalToolBar( final IToolBarManager manager )
 	{
-		manager.add( newLogAction );
+		// manager.add( newLogAction );
 
-		manager.add( new Separator() );
+		// manager.add( new Separator() );
 		manager.add( deleteSessionAction );
 		manager.add( deleteSessionsAction );
 	}

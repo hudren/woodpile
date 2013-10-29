@@ -121,6 +121,9 @@ public class Receiver
 					if ( someEvent instanceof LoggingEvent )
 						event = new LogEvent( host, (LoggingEvent) someEvent );
 
+					else if ( someEvent instanceof org.apache.logging.log4j.core.LogEvent )
+						event = new LogEvent( host, (org.apache.logging.log4j.core.LogEvent) someEvent );
+
 					else if ( someEvent instanceof LogEvent )
 						event = (LogEvent) someEvent;
 
@@ -131,7 +134,7 @@ public class Receiver
 			}
 			catch ( final EOFException e )
 			{
-				// LOG.info( "Client closed socket" );
+				System.out.println( "Client closed socket" );
 			}
 			catch ( final SocketException e )
 			{
@@ -184,6 +187,7 @@ public class Receiver
 	{
 		super( "Woodpile Receiver" );
 
+		System.out.println( "Listening on port " + port );
 		server = new ServerSocket( port );
 
 		setDaemon( true );
@@ -212,6 +216,7 @@ public class Receiver
 			{
 				final Socket client = server.accept();
 
+				System.out.println( "Accepting new client: " + client.toString() );
 				final Thread thread = new Thread( new Reader( client ), "Woodpile Reader" );
 				thread.setDaemon( true );
 				thread.start();

@@ -77,6 +77,8 @@ public class CategoryView
 	private Action showAction;
 	private Action hideAction;
 
+	private Action excludeAndHideAction;
+
 	private Action expandAction;
 	private Action collapseAllAction;
 
@@ -323,6 +325,25 @@ public class CategoryView
 			}
 
 		};
+
+		excludeAndHideAction = new Action( "Exclude and Hide" )
+		{
+
+			@Override
+			public void run()
+			{
+				final Category node = getSelection();
+
+				if ( node != null )
+				{
+					getTree().exclude( node );
+					getTree().hide( node );
+
+					viewer.refresh( node );
+				}
+			}
+
+		};
 	}
 
 	private void hookContextMenu()
@@ -377,6 +398,9 @@ public class CategoryView
 			manager.add( new Separator() );
 			manager.add( showAction );
 			manager.add( hideAction );
+
+			manager.add( new Separator() );
+			manager.add( excludeAndHideAction );
 
 			manager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
 

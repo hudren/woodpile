@@ -19,6 +19,9 @@
 
 package com.hudren.woodpile.prefs;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
@@ -33,6 +36,7 @@ import static com.hudren.woodpile.prefs.PreferenceConstants.FIND_REGEX;
 import static com.hudren.woodpile.prefs.PreferenceConstants.HISTORY_DAYS;
 import static com.hudren.woodpile.prefs.PreferenceConstants.MAX_EVENTS;
 import static com.hudren.woodpile.prefs.PreferenceConstants.PORT;
+import static com.hudren.woodpile.prefs.PreferenceConstants.SIMPLE_NAME;
 
 /**
  * TODO GlobalPreferencePage description
@@ -47,9 +51,6 @@ public class GlobalPreferencePage
 	public GlobalPreferencePage()
 	{
 		super( GRID );
-
-		setPreferenceStore( WoodpilePlugin.getDefault().getPreferenceStore() );
-		// setDescription( "General gettings for log capturing and viewing:" );
 	}
 
 	/**
@@ -58,6 +59,19 @@ public class GlobalPreferencePage
 	@Override
 	public void init( final IWorkbench workbench )
 	{
+		setPreferenceStore( WoodpilePlugin.getDefault().getPreferenceStore() );
+
+		String ip = null;
+		try
+		{
+			ip = InetAddress.getLocalHost().getHostAddress();
+		}
+		catch ( UnknownHostException e )
+		{
+		}
+
+		if ( ip != null )
+			setDescription( "The IP address of this machine is " + ip );
 	}
 
 	/**
@@ -70,6 +84,7 @@ public class GlobalPreferencePage
 		addField( new IntegerFieldEditor( PORT, "Receiver port:", getFieldEditorParent() ) );
 		addField( new IntegerFieldEditor( MAX_EVENTS, "Maximum events in session:", getFieldEditorParent() ) );
 		addField( new IntegerFieldEditor( HISTORY_DAYS, "Days to keep sessions:", getFieldEditorParent() ) );
+		addField( new BooleanFieldEditor( SIMPLE_NAME, "Display simple name for loggers", getFieldEditorParent() ) );
 		addField( new BooleanFieldEditor( FIND_REGEX, "Use regular expressions when searching log", getFieldEditorParent() ) );
 		addField( new BooleanFieldEditor( FIND_IGNORE, "Ignore case when searching log", getFieldEditorParent() ) );
 	}

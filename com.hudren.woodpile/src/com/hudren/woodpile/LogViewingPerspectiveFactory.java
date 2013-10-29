@@ -48,7 +48,7 @@ public class LogViewingPerspectiveFactory
 		final IFolderLayout left = layout.createFolder( "left", IPageLayout.LEFT, 0.20f, editorArea );
 		left.addView( LogExplorerView.ID );
 		left.addPlaceholder( "org.eclipse.jdt.ui.PackageExplorer" );
-		left.addPlaceholder( IPageLayout.ID_RES_NAV );
+		left.addPlaceholder( IPageLayout.ID_PROJECT_EXPLORER );
 
 		layout.addView( CategoryView.ID, IPageLayout.BOTTOM, 0.50f, LogExplorerView.ID );
 

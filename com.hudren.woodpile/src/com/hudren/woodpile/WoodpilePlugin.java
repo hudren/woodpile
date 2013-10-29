@@ -24,7 +24,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.BasicConfigurator;
-import org.eclipse.core.runtime.Preferences;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -70,7 +70,7 @@ public class WoodpilePlugin
 			try
 			{
 				// Get user preferences
-				final Preferences prefs = getPluginPreferences();
+				final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
 				final int port = prefs.getInt( PreferenceConstants.PORT );
 				final boolean start = prefs.getBoolean( PreferenceConstants.AUTO_STARTUP );
 
@@ -89,12 +89,6 @@ public class WoodpilePlugin
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	public void start( final BundleContext context ) throws Exception
 	{
@@ -105,12 +99,6 @@ public class WoodpilePlugin
 		init();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	public void stop( final BundleContext context ) throws Exception
 	{

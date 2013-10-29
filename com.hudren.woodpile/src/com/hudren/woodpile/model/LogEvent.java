@@ -20,8 +20,13 @@
 package com.hudren.woodpile.model;
 
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
@@ -38,6 +43,8 @@ public class LogEvent
 	private static final String NL = System.getProperty( "line.separator" );
 
 	private static final DateFormat df = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.SSS z" );
+
+	private static final ConcurrentHashMap<String, String> HOSTS = new ConcurrentHashMap<String, String>();
 
 	/**
 	 * Serial version UID.
@@ -67,21 +74,81 @@ public class LogEvent
 		this.level = event.getLevel();
 		this.renderedMessage = event.getRenderedMessage();
 		this.threadName = event.getThreadName();
-		this.host = host;
-		this.server = null;
+		this.host = lookupHost( host );
+		this.server = getComponent( event );
 		this.throwableStrRep = event.getThrowableStrRep();
 	}
 
-	public LogEvent( final String host, final String server, final LoggingEvent event )
+	public LogEvent( final String host, final org.apache.logging.log4j.core.LogEvent event )
 	{
-		this.timeStamp = event.timeStamp;
+		Throwable thrown = event.getThrown();
+		String[] rep = null;
+		if ( thrown != null )
+		{
+			StackTraceElement[] stack = thrown.getStackTrace();
+			rep = new String[ stack.length + 1 ];
+
+			int i = 1;
+			rep[ 0 ] = thrown.getClass().getName() + ": " + thrown.getLocalizedMessage();
+			for ( StackTraceElement element : stack )
+				rep[ i++ ] = "    at " + element.toString();
+		}
+
+		this.timeStamp = event.getMillis();
 		this.loggerName = event.getLoggerName();
-		this.level = event.getLevel();
-		this.renderedMessage = event.getRenderedMessage();
+		this.level = Level.toLevel( event.getLevel().name() );
+		this.renderedMessage = event.getMessage().getFormattedMessage();
 		this.threadName = event.getThreadName();
-		this.host = host;
-		this.server = server;
-		this.throwableStrRep = event.getThrowableStrRep();
+		this.host = lookupHost( host );
+		this.server = getComponent( event.getContextMap() );
+		this.throwableStrRep = rep;
+	}
+
+	private static String lookupHost( String host )
+	{
+		String name = HOSTS.get( host );
+		if ( name == null )
+		{
+			name = host;
+
+			Pattern ipPattern = Pattern.compile( "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}" );
+			if ( ipPattern.matcher( host ).matches() )
+			{
+				try
+				{
+					name = InetAddress.getByName( host ).getHostName();
+				}
+				catch ( UnknownHostException e )
+				{
+				}
+			}
+
+			HOSTS.putIfAbsent( host, name );
+		}
+
+		return name;
+	}
+
+	private static String getComponent( LoggingEvent event )
+	{
+		Object component = event.getMDC( "component" );
+		if ( component == null )
+			component = event.getMDC( "server" );
+		if ( component == null )
+			component = event.getMDC( "application" );
+
+		return component != null ? component.toString() : null;
+	}
+
+	private static String getComponent( Map<String, String> context )
+	{
+		String component = context.get( "component" );
+		if ( component == null )
+			component = context.get( "server" );
+		if ( component == null )
+			component = context.get( "application" );
+
+		return component != null ? component : null;
 	}
 
 	/**
@@ -176,13 +243,26 @@ public class LogEvent
 
 	public String getStrRep()
 	{
-		final StringBuffer buffer = new StringBuffer();
+		final StringBuilder buffer = new StringBuilder();
 
-		buffer.append( "<b>Level:</b>    " ).append( level ).append( NL );
-		buffer.append( "<b>Logger:</b>   " ).append( loggerName ).append( NL );
-		buffer.append( "<b>Time:</b>     " ).append( df.format( timeStamp ) ).append( NL );
-		buffer.append( "<b>Thread:</b>   " ).append( threadName ).append( NL );
-		buffer.append( "<b>Message:</b>  " ).append( renderedMessage );
+		// buffer.append( "<b>Level:</b>      " ).append( level ).append( NL );
+		buffer.append( "<b>Time:</b>       " ).append( df.format( timeStamp ) ).append( NL );
+		buffer.append( "<b>Logger:</b>     " ).append( loggerName ).append( NL );
+
+		if ( server != null )
+		{
+			buffer.append( "<b>Component:</b>  " ).append( server );
+
+			if ( host != null && !"localhost".equals( host ) )
+				buffer.append( " on " ).append( host );
+
+			buffer.append( NL );
+		}
+		else if ( host != null )
+			buffer.append( "<b>Host:</b>       " ).append( host ).append( NL );
+
+		buffer.append( "<b>Thread:</b>     " ).append( threadName ).append( NL );
+		buffer.append( "<b>Message:</b>    " ).append( renderedMessage );
 
 		if ( throwableStrRep != null && throwableStrRep.length > 0 )
 		{

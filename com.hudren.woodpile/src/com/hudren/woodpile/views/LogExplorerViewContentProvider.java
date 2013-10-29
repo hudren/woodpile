@@ -116,7 +116,7 @@ public class LogExplorerViewContentProvider
 	{
 		if ( inputElement instanceof SortedSet )
 		{
-			return ( (SortedSet) inputElement ).toArray();
+			return ( (SortedSet<?>) inputElement ).toArray();
 		}
 
 		return null;

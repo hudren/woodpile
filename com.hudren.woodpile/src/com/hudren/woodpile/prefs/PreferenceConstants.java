@@ -32,6 +32,7 @@ public class PreferenceConstants
 	public static final String HISTORY_DAYS = "history.days";
 	public static final String MAX_EVENTS = "maximum.events";
 
+	public static final String SIMPLE_NAME = "logger.simple";
 	public static final String FIND_REGEX = "find.regex";
 	public static final String FIND_IGNORE = "find.ignoreCase";
 

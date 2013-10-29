@@ -47,19 +47,10 @@ public class Activator
 		plugin = this;
 	}
 
-	/**
-	 * @see org.eclipse.ui.IStartup#earlyStartup()
-	 */
 	public void earlyStartup()
 	{
 		// Force loading of woodpile plugin?
 		new WoodpileStartup();
-	}
-
-	@Override
-	public void start( BundleContext context ) throws Exception
-	{
-		super.start( context );
 	}
 
 	@Override

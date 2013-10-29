@@ -69,8 +69,12 @@ public class SessionViewLabelProvider
 	private Map<Level, Color> backgroundColors;
 	private Map<Level, Image> icons;
 
-	public SessionViewLabelProvider()
+	private SessionView view;
+
+	public SessionViewLabelProvider( final SessionView view )
 	{
+		this.view = view;
+
 		createColors();
 		createIcons();
 	}
@@ -188,35 +192,49 @@ public class SessionViewLabelProvider
 					label = df.format( event.getTimeStamp() );
 					break;
 
-				case 2: // Level
+				case 2: // Server
+					label = event.getServer();
+					break;
+
+				case 3: // Level
 					label = event.getLevel().toString();
 					break;
 
-				case 3: // Logger
+				case 4: // Logger
 					label = event.getLoggerName();
+
+					if ( view.isShowSimpleName() )
+					{
+						int pos = label.lastIndexOf( '.' );
+						label = label.substring( pos + 1 );
+					}
 					break;
 
-				case 4: // Message
+				case 5: // Message
 					label = firstLine( event.getRenderedMessage() );
 					break;
 
-				case 5: // Throwable
+				case 6: // Throwable
 					final String[] rep = event.getThrowableStrRep();
 					if ( rep != null && rep.length > 0 )
 						label = rep[ 0 ];
 
+					if ( label != null )
+					{
+						int pos = label.indexOf( ':' );
+						label = label.substring( 0, pos );
+
+						pos = label.lastIndexOf( '.' );
+						label = label.substring( pos + 1 );
+					}
 					break;
 
-				case 6: // Thread
+				case 7: // Thread
 					label = event.getThreadName();
 					break;
 
-				case 7: // Host
+				case 8: // Host
 					label = event.getHost();
-					break;
-
-				case 8: // Server
-					label = event.getServer();
 					break;
 
 				default:

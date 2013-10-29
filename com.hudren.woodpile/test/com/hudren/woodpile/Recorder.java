@@ -149,8 +149,8 @@ public class Recorder
 		for ( final LogEvent event : events )
 		{
 			final LoggingEvent logEvent =
-					new LoggingEvent( event.getLoggerName(), Logger.getLogger( event.getLoggerName() ), event.getTimeStamp(),
-							event.getLevel(), event.getRenderedMessage(), null );
+					new LoggingEvent( event.getLoggerName(), Logger.getLogger( event.getLoggerName() ), event.getTimeStamp(), event
+							.getLevel(), event.getRenderedMessage(), null );
 
 			logger.callAppenders( logEvent );
 		}

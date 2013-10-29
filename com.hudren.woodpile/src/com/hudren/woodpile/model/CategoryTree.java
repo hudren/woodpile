@@ -323,7 +323,7 @@ public class CategoryTree
 	 */
 	public void include( final Category node )
 	{
-		System.out.println( "CategoryTree: include " + node );
+		// System.out.println( "CategoryTree: include " + node );
 
 		FilterInstruction instruction = node.getInstruction();
 		if ( instruction == null )
@@ -347,7 +347,7 @@ public class CategoryTree
 	 */
 	public void exclude( final Category node )
 	{
-		System.out.println( "CategoryTree: exclude " + node );
+		// System.out.println( "CategoryTree: exclude " + node );
 
 		FilterInstruction instruction = node.getInstruction();
 		if ( instruction == null )
@@ -371,7 +371,7 @@ public class CategoryTree
 	 */
 	public void show( final Category node )
 	{
-		System.out.println( "CategoryTree: show " + node );
+		// System.out.println( "CategoryTree: show " + node );
 
 		FilterInstruction instruction = node.getInstruction();
 		if ( instruction == null )
@@ -395,7 +395,7 @@ public class CategoryTree
 	 */
 	public void hide( final Category node )
 	{
-		System.out.println( "CategoryTree: hide " + node );
+		// System.out.println( "CategoryTree: hide " + node );
 
 		FilterInstruction instruction = node.getInstruction();
 		if ( instruction == null )

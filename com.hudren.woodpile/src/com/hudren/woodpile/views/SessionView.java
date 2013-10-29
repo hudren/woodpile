@@ -24,9 +24,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Level;
-import org.eclipse.core.runtime.Preferences;
-import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
@@ -35,6 +32,9 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -71,6 +71,7 @@ import com.hudren.woodpile.model.Session;
 
 import static com.hudren.woodpile.prefs.PreferenceConstants.FIND_IGNORE;
 import static com.hudren.woodpile.prefs.PreferenceConstants.FIND_REGEX;
+import static com.hudren.woodpile.prefs.PreferenceConstants.SIMPLE_NAME;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view
@@ -106,10 +107,12 @@ public class SessionView
 	private TableColumn hostColumn;
 	private TableColumn serverColumn;
 
-	private final ColumnLayoutData columnLayouts[] = { new ColumnPixelData( 16, false, true ),
-			new ColumnPixelData( 150, true, true ), new ColumnPixelData( 70, true, true ), new ColumnPixelData( 200, true, true ),
-			new ColumnPixelData( 300, true, true ), new ColumnPixelData( 150, true, true ), new ColumnPixelData( 150, true, true ),
-			new ColumnPixelData( 150, true, true ), new ColumnPixelData( 150, true, true ) };
+	private final ColumnLayoutData columnLayouts[] =
+			{ new ColumnPixelData( 18, false, true ), new ColumnPixelData( 150, true, true ),
+					new ColumnPixelData( 150, true, true ), new ColumnPixelData( 70, true, true ),
+					new ColumnPixelData( 200, true, true ), new ColumnPixelData( 450, true, true ),
+					new ColumnPixelData( 200, true, true ), new ColumnPixelData( 150, true, true ),
+					new ColumnPixelData( 150, true, true ) };
 
 	private static final String TAG_COLUMN = "column";
 	private static final String TAG_NUMBER = "number";
@@ -121,6 +124,7 @@ public class SessionView
 	private static final String TAG_TEXT = "text";
 
 	private boolean autoScroll = true;
+	private boolean simpleName;
 	private boolean autoShow;
 	private boolean showSearch = true;
 
@@ -176,6 +180,8 @@ public class SessionView
 					SessionView.this.showBusy( false );
 				}
 			}
+			else if ( event.getProperty().equals( SIMPLE_NAME ) )
+				setShowSimpleName( (Boolean) event.getNewValue() );
 		}
 
 	};
@@ -200,8 +206,7 @@ public class SessionView
 
 		setFilterLevelMenuItemCheck( filterLevelActions.get( levelFilter.getLevel() ) );
 
-		final Preferences prefs = WoodpilePlugin.getDefault().getPluginPreferences();
-		prefs.addPropertyChangeListener( propertyChangeListener );
+		WoodpilePlugin.getDefault().getPreferenceStore().addPropertyChangeListener( propertyChangeListener );
 	}
 
 	/**
@@ -210,7 +215,7 @@ public class SessionView
 	@Override
 	public void dispose()
 	{
-		WoodpilePlugin.getDefault().getPluginPreferences().removePropertyChangeListener( propertyChangeListener );
+		WoodpilePlugin.getDefault().getPreferenceStore().removePropertyChangeListener( propertyChangeListener );
 
 		if ( labelProvider != null )
 			labelProvider.dispose();
@@ -287,14 +292,20 @@ public class SessionView
 		gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
 		gridData.horizontalSpan = 2;
 		viewer.getTable().setLayoutData( gridData );
+
+		final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
+		setShowSimpleName( prefs.getBoolean( SIMPLE_NAME ) );
 	}
 
 	private void createTableViewer( final Composite parent )
 	{
 		viewer = new TableViewer( parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION );
+		viewer.setUseHashlookup( true );
+
 		final Table table = viewer.getTable();
 		final TableLayout layout = new TableLayout();
 		table.setLayout( layout );
+		// table.setFont( JFaceResources.getTextFont() );
 
 		if ( memento != null )
 		{
@@ -322,7 +333,7 @@ public class SessionView
 		iconColumn = new TableColumn( table, SWT.CENTER );
 
 		iconColumn.pack();
-		columnLayouts[ i ] = new ColumnPixelData( Math.max( 16, iconColumn.getWidth() ), false, true );
+		columnLayouts[ i ] = new ColumnPixelData( Math.max( 18, iconColumn.getWidth() ), false, true );
 
 		iconColumn.setResizable( columnLayouts[ i ].resizable );
 		layout.addColumnData( columnLayouts[ i++ ] );
@@ -330,6 +341,11 @@ public class SessionView
 		timestampColumn = new TableColumn( table, SWT.LEFT );
 		timestampColumn.setText( "Time" );
 		timestampColumn.setResizable( columnLayouts[ i ].resizable );
+		layout.addColumnData( columnLayouts[ i++ ] );
+
+		serverColumn = new TableColumn( table, SWT.LEFT );
+		serverColumn.setText( "Component" );
+		serverColumn.setResizable( columnLayouts[ i ].resizable );
 		layout.addColumnData( columnLayouts[ i++ ] );
 
 		levelColumn = new TableColumn( table, SWT.LEFT );
@@ -361,16 +377,11 @@ public class SessionView
 		hostColumn.setResizable( columnLayouts[ i ].resizable );
 		layout.addColumnData( columnLayouts[ i++ ] );
 
-		serverColumn = new TableColumn( table, SWT.LEFT );
-		serverColumn.setText( "Server" );
-		serverColumn.setResizable( columnLayouts[ i ].resizable );
-		layout.addColumnData( columnLayouts[ i++ ] );
-
 		table.setHeaderVisible( true );
 		table.setLinesVisible( false );
 
 		viewer.setContentProvider( contentProvider = new SessionViewContentProvider( this ) );
-		viewer.setLabelProvider( labelProvider = new SessionViewLabelProvider() );
+		viewer.setLabelProvider( labelProvider = new SessionViewLabelProvider( this ) );
 		viewer.addFilter( categoryFilter = new CategoryFilter( contentProvider ) );
 		viewer.addFilter( zoomFilter = new ZoomFilter() );
 		viewer.addFilter( levelFilter );
@@ -450,7 +461,7 @@ public class SessionView
 
 	private void createActions()
 	{
-		final Preferences prefs = WoodpilePlugin.getDefault().getPluginPreferences();
+		final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
 
 		deleteLogAction = new Action( "Delete" )
 		{
@@ -634,7 +645,7 @@ public class SessionView
 			@Override
 			public void run()
 			{
-				final Preferences prefs = WoodpilePlugin.getDefault().getPluginPreferences();
+				final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
 
 				prefs.setValue( FIND_REGEX, !prefs.getBoolean( FIND_REGEX ) );
 			}
@@ -648,7 +659,7 @@ public class SessionView
 			@Override
 			public void run()
 			{
-				final Preferences prefs = WoodpilePlugin.getDefault().getPluginPreferences();
+				final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
 
 				prefs.setValue( FIND_IGNORE, !prefs.getBoolean( FIND_IGNORE ) );
 			}
@@ -855,7 +866,7 @@ public class SessionView
 			{
 				if ( !selection.isEmpty() )
 				{
-					final Iterator it = ( (IStructuredSelection) selection ).iterator();
+					final Iterator<?> it = ( (IStructuredSelection) selection ).iterator();
 					if ( it.hasNext() )
 					{
 						final Object obj = it.next();
@@ -887,6 +898,16 @@ public class SessionView
 	public boolean isAutoScroll()
 	{
 		return autoScroll;
+	}
+
+	public boolean isShowSimpleName()
+	{
+		return simpleName;
+	}
+
+	public void setShowSimpleName( boolean simpleName )
+	{
+		this.simpleName = simpleName;
 	}
 
 	/**
@@ -953,7 +974,7 @@ public class SessionView
 		if ( level != levelFilter.getLevel() )
 		{
 			// Save preference
-			final Preferences prefs = WoodpilePlugin.getDefault().getPluginPreferences();
+			final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
 			prefs.setValue( TAG_FILTER_LEVEL, level.toString() );
 
 			// Update levelFilter
@@ -1036,7 +1057,7 @@ public class SessionView
 	{
 		final TextFilter filter = new TextFilter();
 
-		final Preferences prefs = WoodpilePlugin.getDefault().getPluginPreferences();
+		final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
 		filter.setRegex( prefs.getBoolean( FIND_REGEX ) );
 		filter.setIgnoreCase( prefs.getBoolean( FIND_IGNORE ) );
 
