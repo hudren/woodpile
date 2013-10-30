@@ -21,6 +21,7 @@ package com.hudren.woodpile.prefs;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -61,17 +62,43 @@ public class GlobalPreferencePage
 	{
 		setPreferenceStore( WoodpilePlugin.getDefault().getPreferenceStore() );
 
-		String ip = null;
+		ArrayList<String> ips = new ArrayList<String>();
 		try
 		{
-			ip = InetAddress.getLocalHost().getHostAddress();
+			InetAddress localhost = InetAddress.getLocalHost();
+			InetAddress[] addresses = InetAddress.getAllByName( localhost.getCanonicalHostName() );
+
+			if ( addresses != null )
+			{
+				for ( InetAddress address : addresses )
+				{
+					String ip = address.getHostAddress();
+
+					if ( !"127.0.0.1".equals( ip ) )
+						ips.add( ip );
+				}
+			}
+			else
+				ips.add( localhost.getHostAddress() );
 		}
 		catch ( UnknownHostException e )
 		{
 		}
 
-		if ( ip != null )
-			setDescription( "The IP address of this machine is " + ip );
+		if ( !ips.isEmpty() )
+		{
+			String desc = ips.get( 0 );
+
+			if ( ips.size() > 1 )
+			{
+				for ( int i = 1; i < ips.size(); i++ )
+					desc += ", " + ips.get( i );
+
+				setDescription( "The IP addresses for this machine are " + desc );
+			}
+			else
+				setDescription( "The IP address of this machine is " + desc );
+		}
 	}
 
 	/**

@@ -3,11 +3,11 @@
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.17.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-api-2.0-beta9.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-core-2.0-beta9.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-slf4j-impl-2.0-beta9.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="/Users/jeff/develop/woodpile/com.hudren.woodpile/lib/log4j-1.2.17.jar" sourcepath="C:/JavaDev/logging-log4j-1.2.13/src/java"/>
-	<classpathentry kind="lib" path="lib/bsh-core-2.0b4.jar" sourcepath="com.hudren.woodpilesrc.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
