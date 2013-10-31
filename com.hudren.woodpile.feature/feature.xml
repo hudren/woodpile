@@ -2,7 +2,7 @@
 <feature
       id="com.hudren.woodpile"
       label="Woodpile"
-      version="0.7.1"
+      version="0.7.2"
       provider-name="Hudren Andromeda Connection"
       plugin="com.hudren.woodpile">
 
@@ -12,7 +12,7 @@ Log4j events.
 Inspired by Chainsaw. 
 Intended for developers. 
 Requires Eclipse 3.5 and JDK 1.6 runtime. 
-Compatible with Log4j 1.2 and Log4j2 2.0.
+Compatible with Log4j 1.2 and 2.0.
    </description>
 
    <copyright>
@@ -34,16 +34,16 @@ Compatible with Log4j 1.2 and Log4j2 2.0.
 
    <plugin
          id="com.hudren.woodpile"
-         download-size="600"
-         install-size="600"
-         version="0.7.1"
+         download-size="1350"
+         install-size="1350"
+         version="0.7.2"
          unpack="false"/>
 
    <plugin
          id="com.hudren.woodpile.startup"
          download-size="0"
          install-size="0"
-         version="0.7.1"
+         version="0.7.2"
          unpack="false"/>
 
 </feature>
