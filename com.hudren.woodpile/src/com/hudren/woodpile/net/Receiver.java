@@ -116,20 +116,27 @@ public class Receiver
 				{
 					LogEvent event = null;
 
-					// Read event from log
-					final Object someEvent = ois.readObject();
-					if ( someEvent instanceof LoggingEvent )
-						event = new LogEvent( host, (LoggingEvent) someEvent );
+					try
+					{
+						// Read event from log
+						final Object someEvent = ois.readObject();
+						if ( someEvent instanceof LoggingEvent )
+							event = new LogEvent( host, (LoggingEvent) someEvent );
 
-					else if ( someEvent instanceof org.apache.logging.log4j.core.LogEvent )
-						event = new LogEvent( host, (org.apache.logging.log4j.core.LogEvent) someEvent );
+						else if ( someEvent instanceof org.apache.logging.log4j.core.LogEvent )
+							event = new LogEvent( host, (org.apache.logging.log4j.core.LogEvent) someEvent );
 
-					else if ( someEvent instanceof LogEvent )
-						event = (LogEvent) someEvent;
+						else if ( someEvent instanceof LogEvent )
+							event = (LogEvent) someEvent;
 
-					// Queue known events
-					if ( event != null )
-						queue.add( event );
+						// Queue known events
+						if ( event != null )
+							queue.add( event );
+					}
+					catch ( final ClassNotFoundException e )
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 			catch ( final EOFException e )
@@ -141,10 +148,6 @@ public class Receiver
 				// e.printStackTrace();
 			}
 			catch ( final IOException e )
-			{
-				e.printStackTrace();
-			}
-			catch ( final ClassNotFoundException e )
 			{
 				e.printStackTrace();
 			}
