@@ -20,8 +20,10 @@
 package com.hudren.woodpile.prefs;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+import java.util.TreeSet;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -62,40 +64,47 @@ public class GlobalPreferencePage
 	{
 		setPreferenceStore( WoodpilePlugin.getDefault().getPreferenceStore() );
 
-		ArrayList<String> ips = new ArrayList<String>();
+		TreeSet<String> ips = new TreeSet<String>();
 		try
 		{
-			InetAddress localhost = InetAddress.getLocalHost();
-			InetAddress[] addresses = InetAddress.getAllByName( localhost.getCanonicalHostName() );
-
-			if ( addresses != null )
+			Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
+			while ( nis.hasMoreElements() )
 			{
-				for ( InetAddress address : addresses )
+				NetworkInterface ni = nis.nextElement();
+				if ( ni.isUp() )
 				{
-					String ip = address.getHostAddress();
+					Enumeration<InetAddress> enumIpAddr = ni.getInetAddresses();
+					while ( enumIpAddr.hasMoreElements() )
+					{
+						String ip = enumIpAddr.nextElement().getHostAddress();
 
-					if ( !"127.0.0.1".equals( ip ) )
-						ips.add( ip );
+						if ( ip.contains( "." ) )
+							ips.add( ip );
+					}
 				}
 			}
-			else
-				ips.add( localhost.getHostAddress() );
 		}
-		catch ( UnknownHostException e )
+		catch ( SocketException e )
 		{
+			System.out.println( " (error retrieving network interface list)" );
 		}
+
+		if ( ips.size() > 1 )
+			ips.remove( "127.0.0.1" );
 
 		if ( !ips.isEmpty() )
 		{
-			String desc = ips.get( 0 );
+			String desc = "";
+			for ( String ip : ips )
+			{
+				if ( desc.length() > 0 )
+					desc += ", ";
+
+				desc += ip;
+			}
 
 			if ( ips.size() > 1 )
-			{
-				for ( int i = 1; i < ips.size(); i++ )
-					desc += ", " + ips.get( i );
-
 				setDescription( "The IP addresses for this machine are " + desc );
-			}
 			else
 				setDescription( "The IP address of this machine is " + desc );
 		}
@@ -107,10 +116,10 @@ public class GlobalPreferencePage
 	@Override
 	protected void createFieldEditors()
 	{
-		addField( new BooleanFieldEditor( AUTO_STARTUP, "Restart active logs on startup", getFieldEditorParent() ) );
-		addField( new IntegerFieldEditor( PORT, "Receiver port:", getFieldEditorParent() ) );
+		addField( new IntegerFieldEditor( PORT, "Receiver TCP port:", getFieldEditorParent() ) );
 		addField( new IntegerFieldEditor( MAX_EVENTS, "Maximum events in session:", getFieldEditorParent() ) );
 		addField( new IntegerFieldEditor( HISTORY_DAYS, "Days to keep sessions:", getFieldEditorParent() ) );
+		addField( new BooleanFieldEditor( AUTO_STARTUP, "Restart active logs on startup", getFieldEditorParent() ) );
 		addField( new BooleanFieldEditor( SIMPLE_NAME, "Display simple name for loggers", getFieldEditorParent() ) );
 		addField( new BooleanFieldEditor( FIND_REGEX, "Use regular expressions when searching log", getFieldEditorParent() ) );
 		addField( new BooleanFieldEditor( FIND_IGNORE, "Ignore case when searching log", getFieldEditorParent() ) );
