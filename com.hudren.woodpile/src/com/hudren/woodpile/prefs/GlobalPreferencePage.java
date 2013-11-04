@@ -40,6 +40,7 @@ import static com.hudren.woodpile.prefs.PreferenceConstants.HISTORY_DAYS;
 import static com.hudren.woodpile.prefs.PreferenceConstants.MAX_EVENTS;
 import static com.hudren.woodpile.prefs.PreferenceConstants.PORT;
 import static com.hudren.woodpile.prefs.PreferenceConstants.SIMPLE_NAME;
+import static com.hudren.woodpile.prefs.PreferenceConstants.XML_PORT;
 
 /**
  * TODO GlobalPreferencePage description
@@ -117,6 +118,7 @@ public class GlobalPreferencePage
 	protected void createFieldEditors()
 	{
 		addField( new IntegerFieldEditor( PORT, "Receiver TCP port:", getFieldEditorParent() ) );
+		addField( new IntegerFieldEditor( XML_PORT, "Receiver TCP port (XML):", getFieldEditorParent() ) );
 		addField( new IntegerFieldEditor( MAX_EVENTS, "Maximum events in session:", getFieldEditorParent() ) );
 		addField( new IntegerFieldEditor( HISTORY_DAYS, "Days to keep sessions:", getFieldEditorParent() ) );
 		addField( new BooleanFieldEditor( AUTO_STARTUP, "Restart active logs on startup", getFieldEditorParent() ) );

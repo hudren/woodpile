@@ -132,10 +132,14 @@ public class LogEventView
 			@Override
 			public void run()
 			{
-				final TextContent content = new TextContent( Display.getDefault() );
-				content.setContent( event.getStrRep() );
+				if ( event != null )
+				{
+					final TextContent content = new TextContent( Display.getDefault() );
+					content.setContent( event.getStrRep() );
 
-				getClipboard().setContents( new Object[] { content.toPlainText() }, new Transfer[] { TextTransfer.getInstance() } );
+					getClipboard().setContents( new Object[] { content.toPlainText() },
+							new Transfer[] { TextTransfer.getInstance() } );
+				}
 			}
 		};
 		copyAction.setText( "Copy" );

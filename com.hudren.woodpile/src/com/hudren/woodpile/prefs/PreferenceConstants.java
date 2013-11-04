@@ -29,6 +29,7 @@ public class PreferenceConstants
 
 	public static final String AUTO_STARTUP = "autoStart";
 	public static final String PORT = "port";
+	public static final String XML_PORT = "port.xml";
 	public static final String HISTORY_DAYS = "history.days";
 	public static final String MAX_EVENTS = "maximum.events";
 

@@ -72,9 +72,10 @@ public class WoodpilePlugin
 				// Get user preferences
 				final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
 				final int port = prefs.getInt( PreferenceConstants.PORT );
+				final int xmlPort = prefs.getInt( PreferenceConstants.XML_PORT );
 				final boolean start = prefs.getBoolean( PreferenceConstants.AUTO_STARTUP );
 
-				source = new Source( port );
+				source = new Source( port, xmlPort );
 				source.start();
 
 				log = new Log( start );

@@ -104,7 +104,21 @@ public class LogEvent
 		this.throwableStrRep = rep;
 	}
 
-	private static String lookupHost( String host )
+	public LogEvent( final String host, final Map<String, String> fields )
+	{
+		this.timeStamp = Long.valueOf( fields.get( "timestamp" ) );
+		this.loggerName = fields.get( "logger" );
+		this.level = Level.toLevel( fields.get( "level" ).toUpperCase() );
+		this.renderedMessage = fields.get( "message" );
+		this.threadName = fields.get( "thread" );
+		this.host = lookupHost( host );
+		this.server = getComponent( fields );
+
+		String throwable = fields.get( "throwable" );
+		this.throwableStrRep = throwable != null ? throwable.split( "\n" ) : null;
+	}
+
+	private static String lookupHost( final String host )
 	{
 		String name = HOSTS.get( host );
 		if ( name == null )
@@ -245,7 +259,7 @@ public class LogEvent
 	{
 		final StringBuilder buffer = new StringBuilder();
 
-		// buffer.append( "<b>Level:</b>      " ).append( level ).append( NL );
+		buffer.append( "<b>Level:</b>      " ).append( level ).append( NL );
 		buffer.append( "<b>Time:</b>       " ).append( df.format( timeStamp ) ).append( NL );
 		buffer.append( "<b>Logger:</b>     " ).append( loggerName ).append( NL );
 
@@ -258,7 +272,7 @@ public class LogEvent
 
 			buffer.append( NL );
 		}
-		else if ( host != null )
+		else if ( host != null && !"localhost".equals( host ) )
 			buffer.append( "<b>Host:</b>       " ).append( host ).append( NL );
 
 		buffer.append( "<b>Thread:</b>     " ).append( threadName ).append( NL );

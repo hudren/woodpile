@@ -54,6 +54,19 @@ Each log source must be configured to log events using the standard Log4j Socket
 
 The `remoteHost` and `port` parameters for the SocketAppender are used to communicate with Woodpile by sending events across the TCP/IP stack. The events are identified for display within Woodpile by the `application` parameter.
 
+## Log4j2 Configuration
+
+Log4j2 configuration must use the XML Layout since Throwables are serialized and may not be on Woodpile's classpath.
+
+<pre><code>&lt;Appenders&gt;
+	&lt;Socket name="woodpile" host="localHost" port="4565"&gt;
+		&lt;XMLLayout properties="true" complete="true"/&gt;
+	&lt;/Socket&gt;
+&lt;/Appenders&gt;
+</code></pre>
+
+The properties attribute allows the MDC to included with each event.
+
 ## License
 
 Copyright &copy; 2006-2013 Hudren Andromeda Connection. All rights reserved.

@@ -33,9 +33,9 @@ public class Source
 
 	private Receiver receiver;
 
-	public Source( final int port ) throws IOException
+	public Source( final int port, final int xmlPort ) throws IOException
 	{
-		this.receiver = new Receiver( port );
+		this.receiver = new Receiver( port, xmlPort );
 	}
 
 	public void start()

@@ -49,9 +49,14 @@ public class Recorder
 {
 
 	/**
-	 * The port used to capture and playback.
+	 * The port used to capture and playback serialized objects.
 	 */
 	private static final int PORT = 4560;
+
+	/**
+	 * The port used to capture and playback xml events.
+	 */
+	private static final int XML_PORT = 4567;
 
 	/**
 	 * The remote host.
@@ -108,7 +113,7 @@ public class Recorder
 	{
 		System.out.println( "Starting capture..." );
 
-		final Receiver receiver = new Receiver( PORT, this );
+		final Receiver receiver = new Receiver( PORT, XML_PORT, this );
 		receiver.start();
 
 		// Wait until receiver closes
@@ -149,8 +154,8 @@ public class Recorder
 		for ( final LogEvent event : events )
 		{
 			final LoggingEvent logEvent =
-					new LoggingEvent( event.getLoggerName(), Logger.getLogger( event.getLoggerName() ), event.getTimeStamp(), event
-							.getLevel(), event.getRenderedMessage(), null );
+					new LoggingEvent( event.getLoggerName(), Logger.getLogger( event.getLoggerName() ), event.getTimeStamp(),
+							event.getLevel(), event.getRenderedMessage(), null );
 
 			logger.callAppenders( logEvent );
 		}
