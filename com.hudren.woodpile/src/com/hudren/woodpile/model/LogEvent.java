@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
+import org.apache.log4j.spi.LocationInfo;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
@@ -65,8 +66,24 @@ public class LogEvent
 
 	private final String server;
 
+	private final String marker;
+
+	private final String className;
+
+	private final String methodName;
+
+	private final String fileName;
+
+	private final String lineNumber;
+
 	private final String[] throwableStrRep;
 
+	/**
+	 * Constructs a LogEvent from a Log4j 1.2 LoggingEvent.
+	 * 
+	 * @param host The host transmitting the log event
+	 * @param event The Log4j logging event
+	 */
 	public LogEvent( final String host, final LoggingEvent event )
 	{
 		this.timeStamp = event.timeStamp;
@@ -76,9 +93,34 @@ public class LogEvent
 		this.threadName = event.getThreadName();
 		this.host = lookupHost( host );
 		this.server = getComponent( event );
+
+		this.marker = standardMarker( null, renderedMessage );
+
+		LocationInfo location = event.getLocationInformation();
+		if ( location != null && !location.getClassName().equals( "?" ) )
+		{
+			this.className = location.getClassName();
+			this.methodName = location.getMethodName();
+			this.fileName = location.getFileName();
+			this.lineNumber = location.getLineNumber();
+		}
+		else
+		{
+			this.className = null;
+			this.methodName = null;
+			this.fileName = null;
+			this.lineNumber = null;
+		}
+
 		this.throwableStrRep = event.getThrowableStrRep();
 	}
 
+	/**
+	 * Constructs a LogEvent from a Log4j2 2.0 LogEvent.
+	 * 
+	 * @param host The host transmitting the log event
+	 * @param event The Log4j2 log event
+	 */
 	public LogEvent( final String host, final org.apache.logging.log4j.core.LogEvent event )
 	{
 		Throwable thrown = event.getThrown();
@@ -101,9 +143,34 @@ public class LogEvent
 		this.threadName = event.getThreadName();
 		this.host = lookupHost( host );
 		this.server = getComponent( event.getContextMap() );
+
+		this.marker = standardMarker( event.getMarker().getName(), renderedMessage );
+
+		StackTraceElement location = event.getSource();
+		if ( location != null )
+		{
+			this.className = location.getClassName();
+			this.methodName = location.getMethodName();
+			this.fileName = location.getFileName();
+			this.lineNumber = String.valueOf( location.getLineNumber() );
+		}
+		else
+		{
+			this.className = null;
+			this.methodName = null;
+			this.fileName = null;
+			this.lineNumber = null;
+		}
+
 		this.throwableStrRep = rep;
 	}
 
+	/**
+	 * Constructs a LogEvent from a map compatible with a Log4j2 2.0 log event.
+	 * 
+	 * @param host The host transmitting the log event
+	 * @param fields The Log4j2 log event fields
+	 */
 	public LogEvent( final String host, final Map<String, String> fields )
 	{
 		this.timeStamp = Long.valueOf( fields.get( "timestamp" ) );
@@ -113,6 +180,13 @@ public class LogEvent
 		this.threadName = fields.get( "thread" );
 		this.host = lookupHost( host );
 		this.server = getComponent( fields );
+
+		this.marker = standardMarker( null, renderedMessage );
+
+		this.className = fields.get( "class" );
+		this.methodName = fields.get( "method" );
+		this.fileName = fields.get( "file" );
+		this.lineNumber = fields.get( "line" );
 
 		String throwable = fields.get( "throwable" );
 		this.throwableStrRep = throwable != null ? throwable.split( "\n" ) : null;
@@ -163,6 +237,22 @@ public class LogEvent
 			component = context.get( "application" );
 
 		return component != null ? component : null;
+	}
+
+	private String standardMarker( final String marker, String message )
+	{
+		if ( marker != null )
+			return marker;
+
+		if ( message != null )
+		{
+			if ( message.startsWith( "entering " ) )
+				return "ENTER";
+			else if ( message.startsWith( "exiting " ) )
+				return "EXIT";
+		}
+
+		return null;
 	}
 
 	/**
@@ -261,7 +351,24 @@ public class LogEvent
 
 		buffer.append( "<b>Level:</b>      " ).append( level ).append( NL );
 		buffer.append( "<b>Time:</b>       " ).append( df.format( timeStamp ) ).append( NL );
-		buffer.append( "<b>Logger:</b>     " ).append( loggerName ).append( NL );
+
+		String location = null;
+		if ( className != null )
+		{
+			location = className + "." + methodName + "(" + fileName + ":" + lineNumber + ")";
+
+			if ( marker != null )
+				location += " " + marker;
+		}
+
+		if ( location == null || !location.startsWith( loggerName ) )
+			buffer.append( "<b>Logger:</b>     " ).append( loggerName ).append( NL );
+
+		if ( location != null )
+			buffer.append( "<b>Location:</b>   " ).append( location ).append( NL );
+
+		if ( location == null && marker != null )
+			buffer.append( "<b>Marker:</b>     " ).append( marker ).append( NL );
 
 		if ( server != null )
 		{
@@ -292,6 +399,31 @@ public class LogEvent
 		}
 
 		return buffer.toString();
+	}
+
+	public String getClassName()
+	{
+		return className;
+	}
+
+	public String getMethodName()
+	{
+		return methodName;
+	}
+
+	public String getFileName()
+	{
+		return fileName;
+	}
+
+	public String getLineNumber()
+	{
+		return lineNumber;
+	}
+
+	public String getMarker()
+	{
+		return marker;
 	}
 
 }

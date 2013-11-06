@@ -122,13 +122,8 @@ class XMLLayoutReader
 	{
 		HashMap<String, String> event = new HashMap<String, String>();
 
-		// Grab event attributes
-		Iterator<Attribute> iter = element.getAttributes();
-		while ( iter.hasNext() )
-		{
-			Attribute attr = iter.next();
-			event.put( attr.getName().getLocalPart(), attr.getValue() );
-		}
+		// Grab element attributes as fields
+		readAttributes( element, event );
 
 		boolean done = false;
 		while ( !done && reader.hasNext() )
@@ -146,6 +141,9 @@ class XMLLayoutReader
 				else if ( name.equals( "Throwable" ) )
 					event.put( "throwable", readText( reader, start ) );
 
+				else if ( name.equals( "LocationInfo" ) )
+					readAttributes( start, event );
+
 				else if ( name.equals( "Data" ) )
 				{
 					String key = start.getAttributeByName( QName.valueOf( "name" ) ).getValue();
@@ -159,6 +157,16 @@ class XMLLayoutReader
 		}
 
 		return event;
+	}
+
+	private void readAttributes( StartElement element, HashMap<String, String> event )
+	{
+		Iterator<Attribute> iter = element.getAttributes();
+		while ( iter.hasNext() )
+		{
+			Attribute attr = iter.next();
+			event.put( attr.getName().getLocalPart(), attr.getValue() );
+		}
 	}
 
 	private String readText( XMLEventReader reader, StartElement element ) throws XMLStreamException

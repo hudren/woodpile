@@ -16,6 +16,7 @@
     </appender>
 
     <appender name="async" class="org.apache.log4j.AsyncAppender">
+        <param name="locationInfo" value="false" />
         <appender-ref ref="console" />
         <appender-ref ref="woodpile" />
     </appender>
