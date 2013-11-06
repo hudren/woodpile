@@ -221,11 +221,17 @@ public class SessionViewLabelProvider
 
 					if ( label != null )
 					{
+						// Strip the colon and everything after
 						int pos = label.indexOf( ':' );
-						label = label.substring( 0, pos );
+						if ( pos > -1 )
+						{
+							label = label.substring( 0, pos );
 
-						pos = label.lastIndexOf( '.' );
-						label = label.substring( pos + 1 );
+							// Grab the simple class name
+							pos = label.lastIndexOf( '.' );
+							if ( pos > -1 )
+								label = label.substring( pos + 1 );
+						}
 					}
 					break;
 
