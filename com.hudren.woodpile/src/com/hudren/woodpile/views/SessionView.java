@@ -107,12 +107,10 @@ public class SessionView
 	private TableColumn hostColumn;
 	private TableColumn serverColumn;
 
-	private final ColumnLayoutData columnLayouts[] =
-			{ new ColumnPixelData( 18, false, true ), new ColumnPixelData( 150, true, true ),
-					new ColumnPixelData( 150, true, true ), new ColumnPixelData( 70, true, true ),
-					new ColumnPixelData( 200, true, true ), new ColumnPixelData( 450, true, true ),
-					new ColumnPixelData( 200, true, true ), new ColumnPixelData( 150, true, true ),
-					new ColumnPixelData( 150, true, true ) };
+	private final ColumnLayoutData columnLayouts[] = { new ColumnPixelData( 18, true, true ),
+			new ColumnPixelData( 150, true, true ), new ColumnPixelData( 150, true, true ), new ColumnPixelData( 70, true, true ),
+			new ColumnPixelData( 200, true, true ), new ColumnPixelData( 450, true, true ), new ColumnPixelData( 200, true, true ),
+			new ColumnPixelData( 150, true, true ), new ColumnPixelData( 150, true, true ) };
 
 	private static final String TAG_COLUMN = "column";
 	private static final String TAG_NUMBER = "number";
@@ -232,7 +230,7 @@ public class SessionView
 		parent.setLayout( layout );
 
 		searchTextLabel = new Label( parent, SWT.LEFT );
-		searchTextLabel.setText( "Search:" );
+		searchTextLabel.setText( "Filter / Search:" );
 
 		searchTextCombo = new Combo( parent, SWT.DROP_DOWN );
 		searchTextCombo.setVisibleItemCount( 1 );
@@ -331,10 +329,6 @@ public class SessionView
 
 		int i = 0;
 		iconColumn = new TableColumn( table, SWT.CENTER );
-
-		iconColumn.pack();
-		columnLayouts[ i ] = new ColumnPixelData( Math.max( 18, iconColumn.getWidth() ), false, true );
-
 		iconColumn.setResizable( columnLayouts[ i ].resizable );
 		layout.addColumnData( columnLayouts[ i++ ] );
 
@@ -456,7 +450,7 @@ public class SessionView
 
 		manager.add( deleteLogAction );
 		manager.add( scrollLockAction );
-		manager.add( filterAction );
+		// manager.add( filterAction );
 	}
 
 	private void createActions()
@@ -474,8 +468,8 @@ public class SessionView
 
 		};
 		deleteLogAction.setToolTipText( "Start New Session" );
-		deleteLogAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/participant_rem.gif" ) );
-		deleteLogAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/delete.gif" ) );
+		deleteLogAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/clear.gif" ) );
+		deleteLogAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/clear_co.gif" ) );
 
 		scrollLockAction = new Action( "Scroll Lock", IAction.AS_CHECK_BOX )
 		{
@@ -712,8 +706,8 @@ public class SessionView
 
 		};
 		clearSearchAction.setToolTipText( "Clear Search" );
-		clearSearchAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/clear.gif" ) );
-		clearSearchAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/clear_co.gif" ) );
+		clearSearchAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/participant_rem.gif" ) );
+		clearSearchAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/delete.gif" ) );
 
 		findNextAction = new Action( "Find Next", IAction.AS_PUSH_BUTTON )
 		{
