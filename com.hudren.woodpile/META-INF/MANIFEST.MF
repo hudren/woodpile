@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Woodpile Plug-in
 Bundle-SymbolicName: com.hudren.woodpile; singleton:=true
-Bundle-Version: 0.7.3
+Bundle-Version: 0.7.4
 Bundle-ClassPath: woodpile.jar,
  lib/log4j-1.2.17.jar,
  lib/log4j-api-2.0-beta9.jar,
@@ -10,7 +10,7 @@ Bundle-ClassPath: woodpile.jar,
  lib/log4j-slf4j-impl-2.0-beta9.jar,
  lib/slf4j-api-1.7.5.jar
 Bundle-Activator: com.hudren.woodpile.WoodpilePlugin
-Bundle-Vendor: Hudren Andromeda Connection
+Bundle-Vendor: Hudren Andromeda Connection, LLC
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui;bundle-version="3.5.0",
  org.eclipse.core.runtime;bundle-version="3.5.0"

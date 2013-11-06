@@ -2,21 +2,21 @@
 <feature
       id="com.hudren.woodpile"
       label="Woodpile"
-      version="0.7.3"
-      provider-name="Hudren Andromeda Connection"
+      version="0.7.4"
+      provider-name="Hudren Andromeda Connection, LLC"
       plugin="com.hudren.woodpile">
 
    <description>
-      Woodpile is an Eclipse plugin for capturing and viewing Apache
-Log4j events. 
+Woodpile is an Eclipse plugin for capturing and viewing Apache Log4j events. 
 Inspired by Chainsaw. 
 Intended for developers. 
 Requires Eclipse 3.5 and JDK 1.6 runtime. 
-Compatible with Log4j 1.2 and 2.0.
+Designed for Log4j 1.2 and 2.0.
+Compatible with Slf4j 1.7.
    </description>
 
    <copyright>
-      Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved.
+      Copyright (c) 2006-2013 Hudren Andromeda Connection, LLC. All rights reserved.
    </copyright>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
@@ -36,14 +36,14 @@ Compatible with Log4j 1.2 and 2.0.
          id="com.hudren.woodpile"
          download-size="1350"
          install-size="1350"
-         version="0.7.3"
+         version="0.7.4"
          unpack="false"/>
 
    <plugin
          id="com.hudren.woodpile.startup"
          download-size="0"
          install-size="0"
-         version="0.7.3"
+         version="0.7.4"
          unpack="false"/>
 
 </feature>

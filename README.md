@@ -18,7 +18,7 @@ Woodpile contains both a perspective and a preference panel called Log Viewing. 
 
 By default, Woodpile automatically listens over the network for log events at the port specified within the preferences. These events are only stored in memory, so clearing log sessions or exiting /restarting Eclipse will result in their permanent destruction.
 
-## Log4j Configuration
+## Log4j 1.2 Configuration
 
 Each log source must be configured to log events using the standard Log4j SocketAppender, for example:
 
@@ -40,6 +40,7 @@ Each log source must be configured to log events using the standard Log4j Socket
 	&lt;/appender&gt;
 
 	&lt;appender name="async" class="org.apache.log4j.AsyncAppender"&gt;
+		&lt;param name="locationInfo" value="false" /&gt;
 		&lt;appender-ref ref="console" /&gt;
 		&lt;appender-ref ref="woodpile" /&gt;
 	&lt;/appender&gt;
@@ -54,18 +55,18 @@ Each log source must be configured to log events using the standard Log4j Socket
 
 The `remoteHost` and `port` parameters for the SocketAppender are used to communicate with Woodpile by sending events across the TCP/IP stack. The events are identified for display within Woodpile by the `application` parameter.
 
-## Log4j2 Configuration
+## Log4j2 2.0 Configuration
 
 Log4j2 configuration must use the XML Layout since Throwables are serialized and may not be on Woodpile's classpath.
 
 <pre><code>&lt;Appenders&gt;
-	&lt;Socket name="woodpile" host="localHost" port="4565"&gt;
-		&lt;XMLLayout properties="true" complete="true"/&gt;
+	&lt;Socket name="woodpile" host="localhost" port="4565"&gt;
+		&lt;XMLLayout complete="true" properties="true" locationInfo="false"/&gt;
 	&lt;/Socket&gt;
 &lt;/Appenders&gt;
 </code></pre>
 
-The properties attribute allows the MDC to included with each event.
+The `properties` attribute allows the MDC to included with each event. Optionally, `locationInfo`, when set to true, will include location information for each log event (at a severe performance penalty).
 
 ## License
 
