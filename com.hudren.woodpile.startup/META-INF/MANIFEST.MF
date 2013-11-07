@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Woodpile Startup Plug-in
 Bundle-SymbolicName: com.hudren.woodpile.startup;singleton:=true
-Bundle-Version: 0.7.4
+Bundle-Version: 0.7.5
 Bundle-Activator: com.hudren.woodpile.startup.Activator
 Bundle-Vendor: Hudren Andromeda Connection, LLC
 Bundle-Localization: plugin

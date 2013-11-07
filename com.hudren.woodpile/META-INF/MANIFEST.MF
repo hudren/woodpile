@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Woodpile Plug-in
 Bundle-SymbolicName: com.hudren.woodpile; singleton:=true
-Bundle-Version: 0.7.4
+Bundle-Version: 0.7.5
 Bundle-ClassPath: woodpile.jar,
  lib/log4j-1.2.17.jar,
  lib/log4j-api-2.0-beta9.jar,
