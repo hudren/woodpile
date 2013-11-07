@@ -246,9 +246,11 @@ public class LogEvent
 
 		if ( message != null )
 		{
-			if ( message.startsWith( "entering " ) )
+			String tag = message.substring( 0, 5 ).toLowerCase();
+
+			if ( tag.startsWith( "enter" ) )
 				return "ENTER";
-			else if ( message.startsWith( "exiting " ) )
+			else if ( tag.startsWith( "exit" ) )
 				return "EXIT";
 		}
 
@@ -362,13 +364,17 @@ public class LogEvent
 		}
 
 		if ( location == null || !location.startsWith( loggerName ) )
-			buffer.append( "<b>Logger:</b>     " ).append( loggerName ).append( NL );
+		{
+			buffer.append( "<b>Logger:</b>     " ).append( loggerName );
+
+			if ( location == null && marker != null )
+				buffer.append( " " ).append( marker );
+
+			buffer.append( NL );
+		}
 
 		if ( location != null )
 			buffer.append( "<b>Location:</b>   " ).append( location ).append( NL );
-
-		if ( location == null && marker != null )
-			buffer.append( "<b>Marker:</b>     " ).append( marker ).append( NL );
 
 		if ( server != null )
 		{
