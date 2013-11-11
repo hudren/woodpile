@@ -2,7 +2,7 @@
 <feature
       id="com.hudren.woodpile"
       label="Woodpile"
-      version="0.7.5"
+      version="0.7.6"
       provider-name="Hudren Andromeda Connection, LLC"
       plugin="com.hudren.woodpile">
 
@@ -36,14 +36,14 @@ Compatible with Slf4j 1.7.
          id="com.hudren.woodpile"
          download-size="1350"
          install-size="1350"
-         version="0.7.5"
+         version="0.7.6"
          unpack="false"/>
 
    <plugin
          id="com.hudren.woodpile.startup"
          download-size="0"
          install-size="0"
-         version="0.7.5"
+         version="0.7.6"
          unpack="false"/>
 
 </feature>
