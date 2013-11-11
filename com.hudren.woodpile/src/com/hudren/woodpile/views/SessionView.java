@@ -126,9 +126,12 @@ public class SessionView
 	private boolean autoShow;
 	private boolean showSearch = true;
 
-	private Action deleteLogAction;
+	private Action searchAction;
+	private Action findNextAction;
+	private Action findPreviousAction;
+
+	private Action newSessionAction;
 	private Action scrollLockAction;
-	private Action filterAction;
 	private Action doubleClickAction;
 
 	private Action fatalLevelAction;
@@ -153,11 +156,6 @@ public class SessionView
 	private Label searchTextLabel;
 	private Combo searchTextCombo;
 	private final int maxVisibleItemCount = 10;
-
-	private Action searchAction;
-	private Action clearSearchAction;
-	private Action findNextAction;
-	private Action findPreviousAction;
 
 	private Map<Level, Action> filterLevelActions;
 
@@ -230,7 +228,7 @@ public class SessionView
 		parent.setLayout( layout );
 
 		searchTextLabel = new Label( parent, SWT.LEFT );
-		searchTextLabel.setText( "Filter / Search:" );
+		searchTextLabel.setText( "Search:" );
 
 		searchTextCombo = new Combo( parent, SWT.DROP_DOWN );
 		searchTextCombo.setVisibleItemCount( 1 );
@@ -276,12 +274,14 @@ public class SessionView
 			@Override
 			public void widgetDefaultSelected( final SelectionEvent e )
 			{
+				searchAction.setChecked( true );
 				searchAction.run();
 			}
 
 			@Override
 			public void widgetSelected( final SelectionEvent e )
 			{
+				searchAction.run();
 			}
 
 		} );
@@ -443,21 +443,19 @@ public class SessionView
 
 		manager.add( new GroupMarker( group ) );
 		manager.appendToGroup( group, searchAction );
-		manager.appendToGroup( group, clearSearchAction );
 		manager.appendToGroup( group, findNextAction );
 		manager.appendToGroup( group, findPreviousAction );
 		manager.appendToGroup( group, new Separator() );
 
-		manager.add( deleteLogAction );
+		manager.add( newSessionAction );
 		manager.add( scrollLockAction );
-		// manager.add( filterAction );
 	}
 
 	private void createActions()
 	{
 		final IPreferenceStore prefs = WoodpilePlugin.getDefault().getPreferenceStore();
 
-		deleteLogAction = new Action( "Delete" )
+		newSessionAction = new Action( "New Session" )
 		{
 
 			@Override
@@ -467,9 +465,9 @@ public class SessionView
 			}
 
 		};
-		deleteLogAction.setToolTipText( "Start New Session" );
-		deleteLogAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/clear.gif" ) );
-		deleteLogAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/clear_co.gif" ) );
+		newSessionAction.setToolTipText( "Start New Session" );
+		newSessionAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/clear.gif" ) );
+		newSessionAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/clear_co.gif" ) );
 
 		scrollLockAction = new Action( "Scroll Lock", IAction.AS_CHECK_BOX )
 		{
@@ -483,20 +481,6 @@ public class SessionView
 		};
 		scrollLockAction.setToolTipText( "Scroll Lock" );
 		scrollLockAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/lock.gif" ) );
-
-		filterAction = new Action( "Filter", IAction.AS_PUSH_BUTTON )
-		{
-
-			@Override
-			public void run()
-			{
-			}
-
-		};
-		filterAction.setToolTipText( "Filter" );
-		filterAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/filter_ps.gif" ) );
-		filterAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/filter_ps.gif" ) );
-		filterAction.setEnabled( false );
 
 		doubleClickAction = new Action()
 		{
@@ -661,7 +645,7 @@ public class SessionView
 		};
 		ignoreCaseAction.setChecked( prefs.getBoolean( FIND_IGNORE ) );
 
-		searchAction = new Action( "Search", IAction.AS_PUSH_BUTTON )
+		searchAction = new Action( "Search Filter", IAction.AS_CHECK_BOX )
 		{
 
 			@Override
@@ -671,7 +655,7 @@ public class SessionView
 				try
 				{
 					final String text = searchTextCombo.getText();
-					if ( text != null && text.length() == 0 )
+					if ( !this.isChecked() || ( text != null && text.length() == 0 ) )
 						resetFilterText();
 					else
 						setFilterText( text );
@@ -683,31 +667,9 @@ public class SessionView
 			}
 
 		};
-		searchAction.setToolTipText( "Search" );
+		searchAction.setToolTipText( "Filter by search text" );
 		searchAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/tsearch_obj.gif" ) );
 		searchAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/tsearch_obj.gif" ) );
-
-		clearSearchAction = new Action( "Clear Search", IAction.AS_PUSH_BUTTON )
-		{
-
-			@Override
-			public void run()
-			{
-				SessionView.this.showBusy( true );
-				try
-				{
-					resetFilterText();
-				}
-				finally
-				{
-					SessionView.this.showBusy( false );
-				}
-			}
-
-		};
-		clearSearchAction.setToolTipText( "Clear Search" );
-		clearSearchAction.setImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/participant_rem.gif" ) );
-		clearSearchAction.setDisabledImageDescriptor( WoodpilePlugin.getImageDescriptor( "icons/disabled/delete.gif" ) );
 
 		findNextAction = new Action( "Find Next", IAction.AS_PUSH_BUTTON )
 		{
@@ -1156,7 +1118,6 @@ public class SessionView
 	private void enableActions()
 	{
 		searchAction.setEnabled( showSearch && searchTextCombo.getText().length() > 0 );
-		clearSearchAction.setEnabled( showSearch && textFilter != null );
 		findNextAction.setEnabled( showSearch && searchTextCombo.getText().length() > 0 );
 		findPreviousAction.setEnabled( showSearch && searchTextCombo.getText().length() > 0 );
 	}
