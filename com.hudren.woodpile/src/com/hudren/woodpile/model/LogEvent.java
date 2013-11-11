@@ -246,11 +246,14 @@ public class LogEvent
 
 		if ( message != null )
 		{
-			String tag = message.substring( 0, 5 ).toLowerCase();
+			// Normalize message
+			if ( message.length() > 5 )
+				message = message.substring( 0, 5 );
+			message = message.toLowerCase();
 
-			if ( tag.startsWith( "enter" ) )
+			if ( message.startsWith( "enter" ) )
 				return "ENTER";
-			else if ( tag.startsWith( "exit" ) )
+			else if ( message.startsWith( "exit" ) )
 				return "EXIT";
 		}
 
