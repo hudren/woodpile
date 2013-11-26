@@ -138,6 +138,9 @@ class XMLLayoutReader
 				if ( name.equals( "Message" ) )
 					event.put( "message", readText( reader, start ) );
 
+				else if ( name.equals( "Marker" ) )
+					event.put( "marker", readText( reader, start ) );
+
 				else if ( name.equals( "Throwable" ) )
 					event.put( "throwable", readText( reader, start ) );
 
