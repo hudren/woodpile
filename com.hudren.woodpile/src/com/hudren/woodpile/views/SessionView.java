@@ -274,7 +274,9 @@ public class SessionView
 			@Override
 			public void widgetDefaultSelected( final SelectionEvent e )
 			{
-				searchAction.setChecked( true );
+				String text = searchTextCombo.getText();
+				searchAction.setChecked( text != null && text.length() > 0 );
+
 				searchAction.run();
 			}
 
