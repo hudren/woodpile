@@ -15,6 +15,9 @@
    <feature url="features/com.hudren.woodpile_0.7.6.jar" id="com.hudren.woodpile" version="0.7.6">
       <category name="Woodpile"/>
    </feature>
+   <feature url="features/com.hudren.woodpile_0.7.7.jar" id="com.hudren.woodpile" version="0.7.7">
+      <category name="Woodpile"/>
+   </feature>
    <category-def name="Woodpile" label="Woodpile">
       <description>
          This category contains the Woodpile plugin.
