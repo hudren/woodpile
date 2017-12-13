@@ -1,12 +1,12 @@
 # Woodpile
 
-Woodpile is an Eclipse plugin for capturing and viewing Apache log4j events from multiple sources.
+Woodpile is an Eclipse plugin for capturing and viewing Apache log4j and Logback events from multiple sources.
 
 NB: Woodpile is a developer tool and not meant for monitoring production servers.
 
 ## Requirements
 
-Woodpile requires a minimum of Eclipse 3.2 running on Java 6.
+Woodpile requires a minimum of Eclipse 3.2 running on Java 8.
 
 ## Update Site
 
@@ -16,7 +16,7 @@ The update site for Woodpile is `http://www.hudren.com/update`.
 
 Woodpile contains both a perspective and a preference panel called Log Viewing. There are several views within the Log Viewing category that can be added to any perspective.
 
-By default, Woodpile automatically listens over the network for log events at the port specified within the preferences. These events are only stored in memory, so clearing log sessions or exiting /restarting Eclipse will result in their permanent destruction.
+By default, Woodpile automatically listens over the network for log events at the port specified within the preferences. These events are only stored in memory, so clearing log sessions or exiting / restarting Eclipse will result in their permanent destruction.
 
 ## Log4j 1.2 Configuration
 
@@ -66,7 +66,7 @@ Log4j2 configuration must use the XML Layout since Throwables are serialized and
 &lt;/Appenders&gt;
 </code></pre>
 
-The `properties` attribute allows the MDC to included with each event. Optionally, `locationInfo`, when set to true, will include location information for each log event (at a severe performance penalty).
+The `properties` attribute allows the MDC to be included with each event. Optionally, `locationInfo`, when set to true, will include location information for each log event (at a severe performance penalty).
 
 ## Logback Configuration
 
