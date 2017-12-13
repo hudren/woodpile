@@ -68,6 +68,23 @@ Log4j2 configuration must use the XML Layout since Throwables are serialized and
 
 The `properties` attribute allows the MDC to included with each event. Optionally, `locationInfo`, when set to true, will include location information for each log event (at a severe performance penalty).
 
+## Logback Configuration
+
+Logging to Woodpile from Logback can be achieved using the [SocketAppender](https://logback.qos.ch/manual/appenders.html#SocketAppender).
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;configuration&gt;
+	&lt;appender name="woodpile" class="ch.qos.logback.classic.net.SocketAppender"&gt;
+		&lt;RemoteHost&gt;localhost&lt;/RemoteHost&gt;
+		&lt;Port&gt;4560&lt;/Port&gt;
+	&lt;/appender&gt;
+
+	&lt;root level="debug"&gt;
+		&lt;appender-ref ref="woodpile" /&gt;
+	&lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+
 ## License
 
 Copyright &copy; 2006-2013 Hudren Andromeda Connection. All rights reserved.
