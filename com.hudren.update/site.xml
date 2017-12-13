@@ -3,19 +3,10 @@
    <description url="http://www.hudren.com/update">
       Alphalon, LLC
    </description>
-   <feature url="features/com.hudren.woodpile_0.7.3.jar" id="com.hudren.woodpile" version="0.7.3">
-      <category name="Woodpile"/>
-   </feature>
-   <feature url="features/com.hudren.woodpile_0.7.4.jar" id="com.hudren.woodpile" version="0.7.4">
-      <category name="Woodpile"/>
-   </feature>
-   <feature url="features/com.hudren.woodpile_0.7.5.jar" id="com.hudren.woodpile" version="0.7.5">
-      <category name="Woodpile"/>
-   </feature>
-   <feature url="features/com.hudren.woodpile_0.7.6.jar" id="com.hudren.woodpile" version="0.7.6">
-      <category name="Woodpile"/>
-   </feature>
    <feature url="features/com.hudren.woodpile_0.7.7.jar" id="com.hudren.woodpile" version="0.7.7">
+      <category name="Woodpile"/>
+   </feature>
+   <feature url="features/com.hudren.woodpile_0.8.0.jar" id="com.hudren.woodpile" version="0.8.0">
       <category name="Woodpile"/>
    </feature>
    <category-def name="Woodpile" label="Woodpile">

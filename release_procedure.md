@@ -17,7 +17,7 @@ In the order listed, update the version and use the Export Wizard to build the p
 1. Edit the `plugin.xml` file
 1. Update the version number on the Overview tab
 1. Export the plugin to the com.hudren.update project
-	
+
 ### com.hudren.woodpile.feature
 
 1. Edit the `feature.xml` file
@@ -27,7 +27,7 @@ In the order listed, update the version and use the Export Wizard to build the p
 ## Build the update site
 
 1. Edit the `site.xml` file in the com.hudren.update project
-2. Add a new feature to the Development category
+2. Add a new feature to the Woodpile category
 3. Select the new feature and click the Build button
 
 ## Publish the update site

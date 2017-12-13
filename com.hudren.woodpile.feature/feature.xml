@@ -2,7 +2,7 @@
 <feature
       id="com.hudren.woodpile"
       label="Woodpile"
-      version="0.7.7"
+      version="0.8.0"
       provider-name="Alphalon, LLC"
       plugin="com.hudren.woodpile">
 
@@ -11,7 +11,7 @@
 Inspired by Chainsaw. 
 Intended for developers. 
 Requires Eclipse 3.5 and JDK 1.8 runtime. 
-Designed for Log4j 1.2 and 2.0.
+Designed for Log4j and Logback.
 Compatible with Slf4j 1.7.
    </description>
 
@@ -36,14 +36,14 @@ Compatible with Slf4j 1.7.
          id="com.hudren.woodpile"
          download-size="1350"
          install-size="1350"
-         version="0.7.7"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="com.hudren.woodpile.startup"
          download-size="0"
          install-size="0"
-         version="0.7.7"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
