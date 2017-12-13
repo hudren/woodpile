@@ -5,7 +5,7 @@
  * Author:  Jeff Hudren
  * Created: May 14, 2006
  *
- * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved.
+ * Copyright (c) 2006-2017 Alphalon, LLC. All rights reserved.
  *
  * The use and distribution terms for this software are covered by the
  * Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)

@@ -3,7 +3,7 @@
  * Project: com.hudren.woodpile
  * Created: Nov 3, 2013
  *
- * Copyright (c) 2013 Hudren Andromeda Connection. All rights reserved.
+ * Copyright (c) 2013-2017 Alphalon, LLC. All rights reserved.
  */
 
 package com.hudren.woodpile.net;
