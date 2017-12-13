@@ -5,15 +5,15 @@
  * Author:  Jeff Hudren
  * Created: May 14, 2006
  *
- * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved. 
- * 
+ * Copyright (c) 2006-2013 Hudren Andromeda Connection. All rights reserved.
+ *
  * The use and distribution terms for this software are covered by the
  * Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
  * which can be found in the file epl-v10.html at the root of this distribution.
- * 
+ *
  * By using this software in any fashion, you are agreeing to be bound by
  * the terms of this license.
- * 
+ *
  * You must not remove this notice, or any other, from this software.
  */
 
@@ -32,9 +32,17 @@ import org.apache.log4j.Level;
 import org.apache.log4j.spi.LocationInfo;
 import org.apache.log4j.spi.LoggingEvent;
 
+import ch.qos.logback.classic.pattern.ClassOfCallerConverter;
+import ch.qos.logback.classic.pattern.FileOfCallerConverter;
+import ch.qos.logback.classic.pattern.LineOfCallerConverter;
+import ch.qos.logback.classic.pattern.MethodOfCallerConverter;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.IThrowableProxy;
+import ch.qos.logback.classic.spi.StackTraceElementProxy;
+
 /**
  * TODO LogEvent description
- * 
+ *
  * @author Jeff Hudren
  */
 public class LogEvent
@@ -46,6 +54,14 @@ public class LogEvent
 	private static final DateFormat df = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.SSS z" );
 
 	private static final ConcurrentHashMap<String, String> HOSTS = new ConcurrentHashMap<String, String>();
+
+	/**
+	 * Helper converters for Logback events.
+	 */
+	private static final ClassOfCallerConverter classNameConverter = new ClassOfCallerConverter();
+	private static final MethodOfCallerConverter methodConverter = new MethodOfCallerConverter();
+	private static final FileOfCallerConverter fileConverter = new FileOfCallerConverter();
+	private static final LineOfCallerConverter lineConverter = new LineOfCallerConverter();
 
 	/**
 	 * Serial version UID.
@@ -80,7 +96,7 @@ public class LogEvent
 
 	/**
 	 * Constructs a LogEvent from a Log4j 1.2 LoggingEvent.
-	 * 
+	 *
 	 * @param host The host transmitting the log event
 	 * @param event The Log4j logging event
 	 */
@@ -117,7 +133,7 @@ public class LogEvent
 
 	/**
 	 * Constructs a LogEvent from a Log4j2 2.0 LogEvent.
-	 * 
+	 *
 	 * @param host The host transmitting the log event
 	 * @param event The Log4j2 log event
 	 */
@@ -167,7 +183,7 @@ public class LogEvent
 
 	/**
 	 * Constructs a LogEvent from a map compatible with a Log4j2 2.0 log event.
-	 * 
+	 *
 	 * @param host The host transmitting the log event
 	 * @param fields The Log4j2 log event fields
 	 */
@@ -190,6 +206,91 @@ public class LogEvent
 
 		String throwable = fields.get( "throwable" );
 		this.throwableStrRep = throwable != null ? throwable.split( "\n" ) : null;
+	}
+
+	/**
+	 * Constructs a LogEvent from a Logback classic log event.
+	 *
+	 * @param host The host transmitting the log event
+	 * @param fields The Logback log event.
+	 */
+	public LogEvent( final String host, final ILoggingEvent event )
+	{
+		timeStamp = event.getTimeStamp();
+		loggerName = event.getLoggerName();
+		level = getLevel( event );
+		renderedMessage = event.getFormattedMessage();
+		threadName = event.getThreadName();
+		this.host = lookupHost( host );
+		server = getComponent( event );
+
+		marker = standardMarker( null, renderedMessage );
+
+		if ( event.hasCallerData() )
+		{
+			className = classNameConverter.convert( event );
+			methodName = methodConverter.convert( event );
+			fileName = fileConverter.convert( event );
+			lineNumber = lineConverter.convert( event );
+		}
+		else
+		{
+			className = null;
+			methodName = null;
+			fileName = null;
+			lineNumber = null;
+		}
+
+		String[] rep = null;
+		IThrowableProxy thrown = event.getThrowableProxy();
+		if ( thrown != null )
+		{
+			StackTraceElementProxy[] stack = thrown.getStackTraceElementProxyArray();
+			rep = new String[ stack.length + 1 ];
+
+			int i = 1;
+			rep[ 0 ] = thrown.getClassName() + ": " + thrown.getMessage();
+			for ( StackTraceElementProxy element : stack ) {
+				rep[ i++ ] = "    " + element.toString();
+			}
+		}
+		throwableStrRep = rep;
+	}
+
+	private static Level getLevel( final ILoggingEvent event )
+	{
+		Level level;
+		switch ( event.getLevel().toInt() ) {
+			case ch.qos.logback.classic.Level.TRACE_INT:
+				level = Level.TRACE;
+				break;
+
+			case ch.qos.logback.classic.Level.DEBUG_INT:
+				level = Level.DEBUG;
+				break;
+
+			case ch.qos.logback.classic.Level.ERROR_INT:
+				level = Level.ERROR;
+				break;
+
+			case ch.qos.logback.classic.Level.INFO_INT:
+				level = Level.INFO;
+				break;
+
+			case ch.qos.logback.classic.Level.OFF_INT:
+				level = Level.OFF;
+				break;
+
+			case ch.qos.logback.classic.Level.WARN_INT:
+				level = Level.WARN;
+				break;
+
+			case ch.qos.logback.classic.Level.ALL_INT:
+			default:
+				level = Level.ALL;
+				break;
+		}
+		return level;
 	}
 
 	private static String lookupHost( final String host )
@@ -239,6 +340,20 @@ public class LogEvent
 		return component != null ? component : null;
 	}
 
+	private static String getComponent( final ILoggingEvent event )
+	{
+		Map<String, String> mdc = event.getMDCPropertyMap();
+		Object component = mdc.get( "component" );
+		if ( component == null ) {
+			component = mdc.get( "server" );
+		}
+		if ( component == null ) {
+			component = mdc.get( "application" );
+		}
+
+		return component != null ? component.toString() : null;
+	}
+
 	private String standardMarker( final String marker, String message )
 	{
 		if ( marker != null )
@@ -262,7 +377,7 @@ public class LogEvent
 
 	/**
 	 * Getter for host
-	 * 
+	 *
 	 * @return host
 	 */
 	public String getHost()
@@ -272,7 +387,7 @@ public class LogEvent
 
 	/**
 	 * Getter for server
-	 * 
+	 *
 	 * @return server
 	 */
 	public String getServer()
@@ -282,7 +397,7 @@ public class LogEvent
 
 	/**
 	 * Getter for level
-	 * 
+	 *
 	 * @return level
 	 */
 	public Level getLevel()
@@ -292,7 +407,7 @@ public class LogEvent
 
 	/**
 	 * Getter for levelName
-	 * 
+	 *
 	 * @return level
 	 */
 	public String getLevelName()
@@ -302,7 +417,7 @@ public class LogEvent
 
 	/**
 	 * Getter for loggerName
-	 * 
+	 *
 	 * @return loggerName
 	 */
 	public String getLoggerName()
@@ -312,7 +427,7 @@ public class LogEvent
 
 	/**
 	 * Getter for renderedMessage
-	 * 
+	 *
 	 * @return renderedMessage
 	 */
 	public String getRenderedMessage()
@@ -322,7 +437,7 @@ public class LogEvent
 
 	/**
 	 * Getter for threadName
-	 * 
+	 *
 	 * @return threadName
 	 */
 	public String getThreadName()
@@ -332,7 +447,7 @@ public class LogEvent
 
 	/**
 	 * Getter for throwableStrRep
-	 * 
+	 *
 	 * @return throwableStrRep
 	 */
 	public String[] getThrowableStrRep()
@@ -342,7 +457,7 @@ public class LogEvent
 
 	/**
 	 * Getter for timeStamp
-	 * 
+	 *
 	 * @return timeStamp
 	 */
 	public long getTimeStamp()
