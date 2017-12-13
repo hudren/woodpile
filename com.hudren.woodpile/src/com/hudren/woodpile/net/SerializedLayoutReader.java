@@ -16,13 +16,14 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.BlockingQueue;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import org.apache.log4j.spi.LoggingEvent;
 
 import com.hudren.woodpile.model.LogEvent;
 
 /**
  * TODO Type description
- * 
+ *
  * @author jeff
  */
 class SerializedLayoutReader
@@ -56,6 +57,9 @@ class SerializedLayoutReader
 
 					else if ( someEvent instanceof org.apache.logging.log4j.core.LogEvent )
 						event = new LogEvent( host, (org.apache.logging.log4j.core.LogEvent) someEvent );
+
+					else if ( someEvent instanceof ILoggingEvent )
+						event = new LogEvent( host, (ILoggingEvent) someEvent);
 
 					else if ( someEvent instanceof LogEvent )
 						event = (LogEvent) someEvent;
