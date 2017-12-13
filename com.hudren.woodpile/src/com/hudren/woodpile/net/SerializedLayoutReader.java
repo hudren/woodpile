@@ -58,11 +58,11 @@ class SerializedLayoutReader
 					else if ( someEvent instanceof org.apache.logging.log4j.core.LogEvent )
 						event = new LogEvent( host, (org.apache.logging.log4j.core.LogEvent) someEvent );
 
-					else if ( someEvent instanceof LogEvent )
-						event = (LogEvent) someEvent;
-
 					else if ( someEvent instanceof ILoggingEvent )
 						event = new LogEvent( host, (ILoggingEvent) someEvent);
+
+					else if ( someEvent instanceof LogEvent )
+						event = (LogEvent) someEvent;
 
 					// Queue known events
 					if ( event != null )
