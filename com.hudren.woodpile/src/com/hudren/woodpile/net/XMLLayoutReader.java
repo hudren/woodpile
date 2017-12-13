@@ -117,7 +117,6 @@ class XMLLayoutReader
 		manager.connectionClosed( this );
 	}
 
-	@SuppressWarnings( "unchecked" )
 	private HashMap<String, String> readEvent( XMLEventReader reader, StartElement element ) throws XMLStreamException
 	{
 		HashMap<String, String> event = new HashMap<String, String>();
@@ -162,6 +161,7 @@ class XMLLayoutReader
 		return event;
 	}
 
+	@SuppressWarnings( "unchecked" )
 	private void readAttributes( StartElement element, HashMap<String, String> event )
 	{
 		Iterator<Attribute> iter = element.getAttributes();

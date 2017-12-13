@@ -152,7 +152,7 @@ public class LogEvent
 				rep[ i++ ] = "    at " + element.toString();
 		}
 
-		this.timeStamp = event.getMillis();
+		this.timeStamp = event.getTimeMillis();
 		this.loggerName = event.getLoggerName();
 		this.level = Level.toLevel( event.getLevel().name() );
 		this.renderedMessage = event.getMessage().getFormattedMessage();
