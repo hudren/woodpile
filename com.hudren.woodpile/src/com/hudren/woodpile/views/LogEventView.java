@@ -87,7 +87,9 @@ public class LogEventView
 		contributeToActionBars();
 		hookPageSelection();
 
-		WoodpilePlugin.getDefault().getCurrentSession().addListener( this );
+		Session session = WoodpilePlugin.getDefault().getCurrentSession();
+		if ( session != null )
+			session.addListener( this );
 	}
 
 	private void createTextViewer( final Composite parent )
@@ -216,7 +218,9 @@ public class LogEventView
 	@Override
 	public void dispose()
 	{
-		WoodpilePlugin.getDefault().getCurrentSession().removeListener( this );
+		Session session = WoodpilePlugin.getDefault().getCurrentSession();
+		if ( session != null )
+			session.removeListener( this );
 
 		if ( font != null )
 			font.dispose();

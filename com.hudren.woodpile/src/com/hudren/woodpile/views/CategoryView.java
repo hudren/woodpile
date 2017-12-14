@@ -47,6 +47,7 @@ import com.hudren.woodpile.model.CategoryTree;
 import com.hudren.woodpile.model.ContentSelection;
 import com.hudren.woodpile.model.FilterInstruction;
 import com.hudren.woodpile.model.Log;
+import com.hudren.woodpile.model.Session;
 import com.hudren.woodpile.model.VisibilitySelection;
 
 /**
@@ -106,7 +107,10 @@ public class CategoryView
 
 		viewer.setContentProvider( contentProvider = new CategoryViewContentProvider( this ) );
 		viewer.setLabelProvider( new CategoryViewLabelProvider() );
-		viewer.setInput( WoodpilePlugin.getDefault().getCurrentSession().getCategories() );
+
+		Session session = WoodpilePlugin.getDefault().getCurrentSession();
+		if ( session != null )
+			viewer.setInput( session.getCategories() );
 
 		viewer.addPostSelectionChangedListener( this );
 	}

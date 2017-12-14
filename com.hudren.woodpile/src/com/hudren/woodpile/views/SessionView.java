@@ -463,7 +463,9 @@ public class SessionView
 			@Override
 			public void run()
 			{
-				WoodpilePlugin.getDefault().getCurrentSession().restart();
+				Session session = WoodpilePlugin.getDefault().getCurrentSession();
+				if ( session != null )
+					session.restart();
 			}
 
 		};
