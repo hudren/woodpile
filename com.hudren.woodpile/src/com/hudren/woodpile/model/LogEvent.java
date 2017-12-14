@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LocationInfo;
 import org.apache.log4j.spi.LoggingEvent;
+import org.apache.logging.log4j.util.ReadOnlyStringMap;
 
 import ch.qos.logback.classic.pattern.ClassOfCallerConverter;
 import ch.qos.logback.classic.pattern.FileOfCallerConverter;
@@ -158,7 +159,7 @@ public class LogEvent
 		this.renderedMessage = event.getMessage().getFormattedMessage();
 		this.threadName = event.getThreadName();
 		this.host = lookupHost( host );
-		this.server = getComponent( event.getContextMap() );
+		this.server = getComponent( event.getContextData() );
 
 		this.marker = standardMarker( event.getMarker().getName(), renderedMessage );
 
@@ -250,7 +251,8 @@ public class LogEvent
 
 			int i = 1;
 			rep[ 0 ] = thrown.getClassName() + ": " + thrown.getMessage();
-			for ( StackTraceElementProxy element : stack ) {
+			for ( StackTraceElementProxy element : stack )
+			{
 				rep[ i++ ] = "    " + element.toString();
 			}
 		}
@@ -260,7 +262,8 @@ public class LogEvent
 	private static Level getLevel( final ILoggingEvent event )
 	{
 		Level level;
-		switch ( event.getLevel().toInt() ) {
+		switch ( event.getLevel().toInt() )
+		{
 			case ch.qos.logback.classic.Level.TRACE_INT:
 				level = Level.TRACE;
 				break;
@@ -329,6 +332,17 @@ public class LogEvent
 		return component != null ? component.toString() : null;
 	}
 
+	private String getComponent( ReadOnlyStringMap context )
+	{
+		String component = context.getValue( "component" );
+		if ( component == null )
+			component = context.getValue( "server" );
+		if ( component == null )
+			component = context.getValue( "application" );
+
+		return component;
+	}
+
 	private static String getComponent( Map<String, String> context )
 	{
 		String component = context.get( "component" );
@@ -337,21 +351,16 @@ public class LogEvent
 		if ( component == null )
 			component = context.get( "application" );
 
-		return component != null ? component : null;
+		return component;
 	}
 
 	private static String getComponent( final ILoggingEvent event )
 	{
 		Map<String, String> mdc = event.getMDCPropertyMap();
-		Object component = mdc.get( "component" );
-		if ( component == null ) {
-			component = mdc.get( "server" );
-		}
-		if ( component == null ) {
-			component = mdc.get( "application" );
-		}
+		if ( mdc != null )
+			return getComponent( mdc );
 
-		return component != null ? component.toString() : null;
+		return null;
 	}
 
 	private String standardMarker( final String marker, String message )
@@ -473,7 +482,7 @@ public class LogEvent
 		buffer.append( "<b>Time:</b>       " ).append( df.format( timeStamp ) ).append( NL );
 
 		String location = null;
-		if ( className != null )
+		if ( className != null && !"?".equals( className ) )
 		{
 			location = className + "." + methodName + "(" + fileName + ":" + lineNumber + ")";
 
