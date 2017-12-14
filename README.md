@@ -1,12 +1,12 @@
 # Woodpile
 
-Woodpile is an Eclipse plugin for capturing and viewing Apache log4j and Logback events from multiple sources.
+Woodpile is an Eclipse plugin for capturing and viewing Apache log4j, log4j2, and Logback events from multiple sources.
 
 NB: Woodpile is a developer tool and not meant for monitoring production servers.
 
 ## Requirements
 
-Woodpile requires a minimum of Eclipse 3.2 running on Java 8.
+Woodpile requires a minimum of Eclipse 3.5 running on Java 8.
 
 ## Update Site
 
@@ -57,7 +57,7 @@ The `remoteHost` and `port` parameters for the SocketAppender are used to commun
 
 ## Log4j2 2.0 Configuration
 
-Log4j2 configuration must use the XML Layout since Throwables are serialized and may not be on Woodpile's classpath.
+Log4j2 configuration must use the XML Layout since Throwables are serialized and may not be on Woodpile's classpath (required for deserialization).
 
 <pre><code>&lt;Appenders&gt;
 	&lt;Socket name="woodpile" host="localhost" port="4565"&gt;
@@ -75,8 +75,9 @@ Logging to Woodpile from Logback can be achieved using the [SocketAppender](http
 <pre><code>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;configuration&gt;
 	&lt;appender name="woodpile" class="ch.qos.logback.classic.net.SocketAppender"&gt;
-		&lt;RemoteHost&gt;localhost&lt;/RemoteHost&gt;
-		&lt;Port&gt;4560&lt;/Port&gt;
+		&lt;remoteHost&gt;localhost&lt;/remoteHost&gt;
+		&lt;port&gt;4560&lt;/port&gt;
+		&lt;includeCallerData&gt;false&lt;/includeCallerData&gt;
 	&lt;/appender&gt;
 
 	&lt;root level="debug"&gt;
@@ -87,6 +88,6 @@ Logging to Woodpile from Logback can be achieved using the [SocketAppender](http
 
 ## License
 
-Copyright &copy; 2006-2013 Hudren Andromeda Connection. All rights reserved.
+Copyright &copy; 2006-2017 Alphalon, LLC. All rights reserved.
 
 Distributed under the [Eclipse Public License 1.0](http://opensource.org/licenses/eclipse-1.0.php).
