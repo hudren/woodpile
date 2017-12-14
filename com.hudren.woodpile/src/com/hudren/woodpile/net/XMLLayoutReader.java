@@ -138,17 +138,38 @@ class XMLLayoutReader
 					event.put( "message", readText( reader, start ) );
 
 				else if ( name.equals( "Marker" ) )
-					event.put( "marker", readText( reader, start ) );
+				{
+					if ( !event.containsKey( "marker" ) )
+					{
+						String marker = start.getAttributeByName( QName.valueOf( "name" ) ).getValue();
+						event.put( "marker", marker );
+					}
+				}
 
-				else if ( name.equals( "Throwable" ) )
-					event.put( "throwable", readText( reader, start ) );
+				else if ( name.equals( "Thrown" ) )
+				{
+					String exception = start.getAttributeByName( QName.valueOf( "name" ) ).getValue();
+					String message = start.getAttributeByName( QName.valueOf( "localizedMessage" ) ).getValue();
+					event.put( "throwable", exception + ": " + message );
+				}
 
-				else if ( name.equals( "LocationInfo" ) )
+				else if ( name.equals( "ExtendedStackTraceItem" ) )
+				{
+					String className = start.getAttributeByName( QName.valueOf( "class" ) ).getValue();
+					String method = start.getAttributeByName( QName.valueOf( "method" ) ).getValue();
+					String file = start.getAttributeByName( QName.valueOf( "file" ) ).getValue();
+					String line = start.getAttributeByName( QName.valueOf( "line" ) ).getValue();
+
+					String frame = "\n    at " + className + "." + method + "(" + file + ":" + line + ")";
+					event.put( "throwable", event.get( "throwable" ) + frame );
+				}
+
+				else if ( name.equals( "Source" ) )
 					readAttributes( start, event );
 
-				else if ( name.equals( "Data" ) )
+				else if ( name.equals( "item" ) )
 				{
-					String key = start.getAttributeByName( QName.valueOf( "name" ) ).getValue();
+					String key = start.getAttributeByName( QName.valueOf( "key" ) ).getValue();
 					String value = start.getAttributeByName( QName.valueOf( "value" ) ).getValue();
 					event.put( key, value );
 				}

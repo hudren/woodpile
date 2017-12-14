@@ -25,8 +25,13 @@ public class CreateLog4j2Events
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	private static final Marker FLOW = MarkerManager.getMarker( "FLOW" );
-	private static final Marker ENTER = MarkerManager.getMarker( "ENTER", FLOW );
-	private static final Marker EXIT = MarkerManager.getMarker( "EXIT", FLOW );
+	private static final Marker ENTER = MarkerManager.getMarker( "ENTER" );
+	private static final Marker EXIT = MarkerManager.getMarker( "EXIT" );
+
+	{
+		ENTER.setParents( FLOW );
+		EXIT.setParents( FLOW );
+	}
 
 	/**
 	 * TODO Method description for <code>main()</code>

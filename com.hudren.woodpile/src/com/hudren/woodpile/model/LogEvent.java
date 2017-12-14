@@ -189,8 +189,8 @@ public class LogEvent
 	 */
 	public LogEvent( final String host, final Map<String, String> fields )
 	{
-		this.timeStamp = Long.valueOf( fields.get( "timestamp" ) );
-		this.loggerName = fields.get( "logger" );
+		this.timeStamp = Long.valueOf( fields.get( "timeMillis" ) );
+		this.loggerName = fields.get( "loggerName" );
 		this.level = Level.toLevel( fields.get( "level" ).toUpperCase() );
 		this.renderedMessage = fields.get( "message" );
 		this.threadName = fields.get( "thread" );
