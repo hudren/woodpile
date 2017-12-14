@@ -103,7 +103,9 @@ public class WoodpilePlugin
 	@Override
 	public void stop( final BundleContext context ) throws Exception
 	{
-		source.stop();
+		if ( source != null )
+			source.stop();
+
 		imageCache.dispose();
 
 		super.stop( context );
