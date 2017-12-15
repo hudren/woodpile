@@ -24,6 +24,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -242,21 +243,29 @@ public class LogEvent
 			lineNumber = null;
 		}
 
-		String[] rep = null;
+		ArrayList<String> rep = null;
 		IThrowableProxy thrown = event.getThrowableProxy();
-		if ( thrown != null )
+		while ( thrown != null )
 		{
 			StackTraceElementProxy[] stack = thrown.getStackTraceElementProxyArray();
-			rep = new String[ stack.length + 1 ];
 
-			int i = 1;
-			rep[ 0 ] = thrown.getClassName() + ": " + thrown.getMessage();
-			for ( StackTraceElementProxy element : stack )
+			String causedBy;
+			if ( rep == null )
 			{
-				rep[ i++ ] = "    " + element.toString();
+				rep = new ArrayList<>();
+				causedBy = "";
 			}
+			else
+				causedBy = "Caused by: ";
+
+			rep.add( causedBy + thrown.getClassName() + ": " + thrown.getMessage() );
+
+			for ( StackTraceElementProxy element : stack )
+				rep.add( "    " + element.toString() );
+
+			thrown = thrown.getCause();
 		}
-		throwableStrRep = rep;
+		throwableStrRep = rep == null ? null : rep.toArray( new String[ rep.size() ] );
 	}
 
 	private static Level getLevel( final ILoggingEvent event )
