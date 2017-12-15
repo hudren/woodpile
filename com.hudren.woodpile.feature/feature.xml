@@ -2,7 +2,7 @@
 <feature
       id="com.hudren.woodpile"
       label="Woodpile"
-      version="0.8.2"
+      version="0.8.3"
       provider-name="Alphalon, LLC"
       plugin="com.hudren.woodpile">
 
@@ -36,14 +36,14 @@ Designed for Log4j, Log4j2, and Logback.
          id="com.hudren.woodpile"
          download-size="1350"
          install-size="1350"
-         version="0.8.2"
+         version="0.8.3"
          unpack="false"/>
 
    <plugin
          id="com.hudren.woodpile.startup"
          download-size="0"
          install-size="0"
-         version="0.8.2"
+         version="0.8.3"
          unpack="false"/>
 
 </feature>
